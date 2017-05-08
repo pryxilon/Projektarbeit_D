@@ -17,6 +17,17 @@ public:
     // Setter und Getter
     void setView(QGraphicsView *);
     QGraphicsView * getView();
+    QMovie *getMovie() const;
+    void setMovie(QMovie *value);
+    QLabel *getWarpHoleLabel() const;
+    void setWarpHoleLabel(QLabel *value);
+    qint64 getCurrentTime() const;
+    void setCurrentTime(const qint64 &value);
+    bool getVideoIsRunning() const;
+    void setVideoIsRunning(bool value);
+    QMediaPlayer *getVideoMusic() const;
+    void setVideoMusic(QMediaPlayer *value);
+
     void setSlots(Slot *, int);
     int setMaxSpinsFirstSlot();
     int setAddSpinsOtherSlots();
@@ -39,21 +50,6 @@ public:
     // public Variables
     Slot * slot[5];
     int line[5];
-
-    QMovie *getMovie() const;
-    void setMovie(QMovie *value);
-
-    QLabel *getWarpHoleLabel() const;
-    void setWarpHoleLabel(QLabel *value);
-
-    qint64 getCurrentTime() const;
-    void setCurrentTime(const qint64 &value);
-
-    bool getVideoIsRunning() const;
-    void setVideoIsRunning(bool value);
-
-    QMediaPlayer *getVideoMusic() const;
-    void setVideoMusic(QMediaPlayer *value);
 
 private:
     QGraphicsView * view;
