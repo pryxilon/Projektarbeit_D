@@ -1,6 +1,5 @@
 #include "square.h"
 #include <QDebug>
-#include <QTimer>
 #include <QGraphicsPixmapItem>
 #include <QRectF>
 
