@@ -5,7 +5,6 @@
 #include <QPushButton>
 #include <QDebug>
 #include <QWidget>
-#include <QTimer>
 
 Border::Border()
 {
