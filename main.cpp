@@ -69,34 +69,40 @@ int main(int argc, char *argv[])
     }
 
     while(1) {
-        if(bf->startButton->isDown() && (gf->getVideoIsRunning() == false || gf->getFreeSpin() != 0)) {
+        if((bf->startButton->isDown() && gf->getVideoIsRunning() == false) || (gf->getVideoIsRunning() == false || gf->getFreeSpin() != 0)) {
             gf->dehighlightWinningLines();              // alle "WinnigLines" "ausschalten"
             gf->setWinningLinesToZero();                // "Winninglines" müssen vor jeder Runde auf 0 gesetzt werden
+            gf->gameFrameSlotCycle();                   // soll einen kompletten durchlauf der Slots durchführen, wie in einer Spielrunde, soll normal in der "hauptschleife" wiederholt werden
+            gf->checkShowingSquares();                  // überprüfe die zu sehendes Felder und überprüfe ob gewonnen wurde
+            gf->highlightWinningLines();
 
-            if(gf->getFreeSpin() != 0) {
+        }
 
-                if(gf->getVideoIsRunning() == false) {
-                    gf->playVideoFreeSpin();
+        if(gf->getFreeSpin() != 0) {
+
+            if(gf->getVideoIsRunning() == false) {
+                gf->playVideoFreeSpin();
+            }
+
+            if((gf->getVideoIsRunning() == true) && ((gf->getCurrentTime() + 4) - QDateTime::currentSecsSinceEpoch() < 0)) {
+                gf->hideVideoFreeSpin();
+
+                for(int i = 0; i < gf->getFreeSpin(); i++) {
+                    gf->dehighlightWinningLines();              // alle "WinnigLines" "ausschalten"
+                    gf->setWinningLinesToZero();                // "Winninglines" müssen vor jeder Runde auf 0 gesetzt werden
+
+                    gf->gameFrameSlotCycle();                   // soll einen kompletten durchlauf der Slots durchführen, wie in einer Spielrunde, soll normal in der "hauptschleife" wiederholt werden
+                    gf->checkShowingSquares();                  // überprüfe die zu sehendes Felder und überprüfe ob gewonnen wurde
+                    gf->highlightWinningLines();
                 }
-
-                if(gf->getVideoIsRunning()) {
-                    for(int i = 0; i < gf->getFreeSpin(); i++) {
-                        gf->gameFrameSlotCycle();                   // soll einen kompletten durchlauf der Slots durchführen, wie in einer Spielrunde, soll normal in der "hauptschleife" wiederholt werden
-                        gf->checkShowingSquares();                  // überprüfe die zu sehendes Felder und überprüfe ob gewonnen wurde
-                        gf->highlightWinningLines();
-                    }
-                }
-            } else {
-                gf->gameFrameSlotCycle();                   // soll einen kompletten durchlauf der Slots durchführen, wie in einer Spielrunde, soll normal in der "hauptschleife" wiederholt werden
-                gf->checkShowingSquares();                  // überprüfe die zu sehendes Felder und überprüfe ob gewonnen wurde
-                gf->highlightWinningLines();
             }
         }
+
         if(bf->vidButton->isDown() && gf->getVideoIsRunning() == false) {                       // diese Schleife + Inhalt muss später entfernt werden, wenn nicht mehr getestet werden muss
             gf->playVideoFreeSpin();
         }
 
-        if((gf->getVideoIsRunning() == true) && ((gf->getCurrentTime() + 6) - QDateTime::currentSecsSinceEpoch() < 0)) {
+        if((gf->getVideoIsRunning() == true) && ((gf->getCurrentTime() + 4) - QDateTime::currentSecsSinceEpoch() < 0)) {
             gf->hideVideoFreeSpin();
         }
 

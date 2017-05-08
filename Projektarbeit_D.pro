@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
-#QT       += multimedia multimediawidgets
+QT       += multimedia multimediawidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -47,11 +47,14 @@ FORMS    +=
 DISTFILES += \
     Slotmachine.qml
 
-#win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../../Coding/Qt/5.8/msvc2015_64/lib/ -lQt5Multimedia
-#else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../../Coding/Qt/5.8/msvc2015_64/lib/ -lQt5Multimediad
-#else:unix: LIBS += -L$$PWD/../../../../../../Coding/Qt/5.8/msvc2015_64/lib/ -lQt5Multimedia
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../../Coding/Qt/5.8/msvc2015_64/lib/ -lQt5Multimedia
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../../Coding/Qt/5.8/msvc2015_64/lib/ -lQt5Multimediad
+else:unix: LIBS += -L$$PWD/../../../../../../Coding/Qt/5.8/msvc2015_64/lib/ -lQt5Multimedia
 
 #INCLUDEPATH += $$PWD/../../../../../../Coding/Qt/5.8/msvc2015_64/include
 #DEPENDPATH += $$PWD/../../../../../../Coding/Qt/5.8/msvc2015_64/include
 
-#unix|win32: LIBS += -lQt5Multimedia
+INCLUDEPATH += $$PWD/../../../../../../Coding/Qt/5.9/msvc2015_64/include
+DEPENDPATH += $$PWD/../../../../../../Coding/Qt/5.9/msvc2015_64/include
+
+unix|win32: LIBS += -lQt5Multimedia
