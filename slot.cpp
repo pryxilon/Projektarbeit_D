@@ -150,7 +150,7 @@ int Slot::setRandomPictures(int i) {
 
 int Slot::setRandomNumbers(int i) {
     //srand(time(0));
-    QTime time = QTime::currentTime(); //qsrand((uint)time.msec());
+    //QTime time = QTime::currentTime(); //qsrand((uint)time.msec());
     int rnd = qrand() % 75 + 1;
     int type = 0;
     int x = i == 0 ? 5 : i - 1;
