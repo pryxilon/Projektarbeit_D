@@ -26,8 +26,6 @@ GameFrame::GameFrame(QGraphicsView * view, int mainNumbers[6])
 
     warpHoleLabel = new QLabel();
     warpHoleLabel->setMask((new QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Warphole.gif"))->mask());
-    //warpHoleLabel->setFixedHeight(720);
-    //warpHoleLabel->setFixedWidth(1280);
 
     movie = new QMovie("C:/Users/kaihs/Documents/Coding/Bilder/Warphole.gif");
     setCurrentTime(QDateTime::currentSecsSinceEpoch());
@@ -38,18 +36,8 @@ GameFrame::GameFrame(QGraphicsView * view, int mainNumbers[6])
     hideVideoFreeSpin();
 
     videoMusic = new QMediaPlayer();
-    //QVideoWidget * videoWid = new QVideoWidget();
 
     videoMusic->setMedia(QUrl("C:/Users/kaihs/Documents/Coding/Bilder/Wurmloch.mp3"));
-
-    /*player->setVideoOutput(videoWid);
-    player->setMedia(QUrl::fromLocalFile("C:/Users/kaihs/Documents/Coding/Bilder/Warphole.mp4"));
-    videoWid->setGeometry(mainNumbers[1], mainNumbers[0], 1280, 720);
-    videoWid->show();
-    player->setVolume(10);
-    player->play();
-*/
-
 }
 
 void GameFrame::setView(QGraphicsView * view)
@@ -60,6 +48,67 @@ void GameFrame::setView(QGraphicsView * view)
 QGraphicsView * GameFrame::getView()
 {
     return view;
+}
+
+QMovie *GameFrame::getMovie() const
+{
+    return movie;
+}
+
+void GameFrame::setMovie(QMovie *value)
+{
+    movie = value;
+}
+
+QLabel *GameFrame::getWarpHoleLabel() const
+{
+    return warpHoleLabel;
+}
+
+void GameFrame::setWarpHoleLabel(QLabel *value)
+{
+    warpHoleLabel = value;
+}
+
+qint64 GameFrame::getCurrentTime() const
+{
+    return currentTime;
+}
+
+void GameFrame::setCurrentTime(const qint64 &value)
+{
+    currentTime = value;
+}
+
+bool GameFrame::getVideoIsRunning() const
+{
+    return videoIsRunning;
+}
+
+void GameFrame::setVideoIsRunning(bool value)
+{
+    videoIsRunning = value;
+}
+
+QMediaPlayer *GameFrame::getVideoMusic() const
+{
+    return videoMusic;
+}
+
+void GameFrame::setVideoMusic(QMediaPlayer *value)
+{
+    videoMusic = value;
+}
+
+
+int GameFrame::getFreeSpin() const
+{
+    return freeSpin;
+}
+
+void GameFrame::setFreeSpin(int value)
+{
+    freeSpin = value;
 }
 
 void GameFrame::setSlots(Slot * slot, int i)
@@ -154,8 +203,6 @@ void GameFrame::checkShowingSquares() {
     }
 
     checkForWinningLines(count);
-
-
 }
 
 void GameFrame::checkForWinningLines(int count) {                        // shownSquares[Slot#][Square#] -> shownSquares[5][3]
@@ -275,56 +322,6 @@ void GameFrame::hideVideoFreeSpin()
     setVideoIsRunning(false);
 }
 
-QMovie *GameFrame::getMovie() const
-{
-    return movie;
-}
-
-void GameFrame::setMovie(QMovie *value)
-{
-    movie = value;
-}
-
-QLabel *GameFrame::getWarpHoleLabel() const
-{
-    return warpHoleLabel;
-}
-
-void GameFrame::setWarpHoleLabel(QLabel *value)
-{
-    warpHoleLabel = value;
-}
-
-qint64 GameFrame::getCurrentTime() const
-{
-    return currentTime;
-}
-
-void GameFrame::setCurrentTime(const qint64 &value)
-{
-    currentTime = value;
-}
-
-bool GameFrame::getVideoIsRunning() const
-{
-    return videoIsRunning;
-}
-
-void GameFrame::setVideoIsRunning(bool value)
-{
-    videoIsRunning = value;
-}
-
-QMediaPlayer *GameFrame::getVideoMusic() const
-{
-    return videoMusic;
-}
-
-void GameFrame::setVideoMusic(QMediaPlayer *value)
-{
-    videoMusic = value;
-}
-
 void GameFrame::highlightWinningLines() {
     for(int i = 0; i < 3; i++) {
         if(line[i] != 0){
@@ -398,14 +395,4 @@ void GameFrame::setWinningLinesToZero()
 void GameFrame::raiseFreeSpins()
 {
     this->freeSpin += 10;
-}
-
-int GameFrame::getFreeSpin() const
-{
-    return freeSpin;
-}
-
-void GameFrame::setFreeSpin(int value)
-{
-    freeSpin = value;
 }
