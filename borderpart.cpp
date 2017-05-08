@@ -1,5 +1,4 @@
 #include "borderpart.h"
-
 #include <QBrush>
 #include <QDebug>
 
