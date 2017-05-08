@@ -27,6 +27,8 @@ public:
     void setVideoIsRunning(bool value);
     QMediaPlayer *getVideoMusic() const;
     void setVideoMusic(QMediaPlayer *value);
+    QMediaPlayer *getClickSound() const;
+    void setClickSound(QMediaPlayer *value);
 
     void setSlots(Slot *, int);
     int setMaxSpinsFirstSlot();
@@ -45,7 +47,8 @@ public:
     void checkForWinningLines(int);
     void playVideoFreeSpin();
     void hideVideoFreeSpin();
-
+    void playClickSound();
+    void stopClickSound();
 
     // public Variables
     Slot * slot[5];
@@ -61,6 +64,7 @@ private:
     QGraphicsProxyWidget * proxyVid;
     bool videoIsRunning = false;
     QMediaPlayer * videoMusic;
+    QMediaPlayer * clickSound;
 };
 
 #endif // GAMEFRAME_H
