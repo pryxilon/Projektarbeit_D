@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
     }
 
     while(1) {
-        if((bf->startButton->isDown() && gf->getVideoIsRunning() == false) || (gf->getVideoIsRunning() == false || gf->getFreeSpin() != 0)) {
+        if((bf->startButton->isDown() && gf->getVideoIsRunning() == false)) {
             gf->dehighlightWinningLines();              // alle "WinnigLines" "ausschalten"
             gf->setWinningLinesToZero();                // "Winninglines" müssen vor jeder Runde auf 0 gesetzt werden
             gf->gameFrameSlotCycle();                   // soll einen kompletten durchlauf der Slots durchführen, wie in einer Spielrunde, soll normal in der "hauptschleife" wiederholt werden

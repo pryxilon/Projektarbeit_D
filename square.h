@@ -59,11 +59,6 @@ private:
     int sqHeight, sqWidth;
     int type;
     int stepsize;
-/*  Spielkarte spielkarte;
-    QPixmap pic;
-
-
-*/
 };
 
 #endif // SQUARE_H

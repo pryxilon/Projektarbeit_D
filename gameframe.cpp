@@ -5,8 +5,6 @@
 #include <QGraphicsView>
 #include <QDebug>
 #include <QEventLoop>
-#include <QTimer>
-#include <time.h>
 #include <QThread>
 #include <QLabel>
 #include <QGraphicsProxyWidget>
@@ -16,10 +14,9 @@
 
 GameFrame::GameFrame(QGraphicsView * view, int mainNumbers[6])
 {
-
     setRect((view->width() - 5 * mainNumbers[2] - 4 * mainNumbers[4]) / 2, mainNumbers[0], 5 * mainNumbers[2] + 4 * mainNumbers[4], mainNumbers[2] * 3);
-
     setView(view);
+    setCurrentTime(QDateTime::currentSecsSinceEpoch());
 
     initializeSlots(mainNumbers);
     setWinningLinesToZero();
@@ -28,16 +25,16 @@ GameFrame::GameFrame(QGraphicsView * view, int mainNumbers[6])
     warpHoleLabel->setMask((new QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Warphole.gif"))->mask());
 
     movie = new QMovie("C:/Users/kaihs/Documents/Coding/Bilder/Warphole.gif");
-    setCurrentTime(QDateTime::currentSecsSinceEpoch());
-
     warpHoleLabel->setMovie(movie);
     proxyVid = view->scene()->addWidget(warpHoleLabel);
     proxyVid->setPos(mainNumbers[1], mainNumbers[0]);
-    hideVideoFreeSpin();
-
     videoMusic = new QMediaPlayer();
-
     videoMusic->setMedia(QUrl("C:/Users/kaihs/Documents/Coding/Bilder/Wurmloch.mp3"));
+
+    clickSound = new QMediaPlayer();
+    clickSound->setMedia(QUrl("C:/Users/kaihs/Documents/Coding/Bilder/click.mp3"));
+
+    hideVideoFreeSpin();
 }
 
 void GameFrame::setView(QGraphicsView * view)
@@ -155,6 +152,10 @@ void GameFrame::gameFrameSlotCycle()                        // Verantwortlich fÃ
                 slot[i]->slotSquaresMove();                                 // Funktionsaufruf dass im Slot der "MOVE Slot" aktiviert wird und
                                                                             // die Quadrate des Slots (hier um 5 Pixel) verschoben werden
             }
+        }
+        if(spin == maxSpins[0] || spin == maxSpins[1] || spin == maxSpins[2] || spin == maxSpins[3] || spin == maxSpins[4]) {
+            stopClickSound();
+            playClickSound();
         }
     }
 }
@@ -320,6 +321,25 @@ void GameFrame::hideVideoFreeSpin()
     movie->stop();
     warpHoleLabel->setVisible(false);
     setVideoIsRunning(false);
+    videoMusic->stop();
+}
+
+void GameFrame::playClickSound() {
+    clickSound->play();
+}
+
+void GameFrame::stopClickSound() {
+    clickSound->stop();
+}
+
+QMediaPlayer *GameFrame::getClickSound() const
+{
+    return clickSound;
+}
+
+void GameFrame::setClickSound(QMediaPlayer *value)
+{
+    clickSound = value;
 }
 
 void GameFrame::highlightWinningLines() {
