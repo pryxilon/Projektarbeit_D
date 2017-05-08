@@ -5,6 +5,7 @@
 #include <QGraphicsRectItem>
 #include <QGraphicsView>
 #include <QLabel>
+#include <QMediaPlayer>
 #include <QMovie>
 #include "slot.h"
 
@@ -51,6 +52,9 @@ public:
     bool getVideoIsRunning() const;
     void setVideoIsRunning(bool value);
 
+    QMediaPlayer *getVideoMusic() const;
+    void setVideoMusic(QMediaPlayer *value);
+
 private:
     QGraphicsView * view;
     Square * shownSquares[5][3];
@@ -60,6 +64,7 @@ private:
     qint64 currentTime;
     QGraphicsProxyWidget * proxyVid;
     bool videoIsRunning = false;
+    QMediaPlayer * videoMusic;
 };
 
 #endif // GAMEFRAME_H

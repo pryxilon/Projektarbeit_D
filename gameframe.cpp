@@ -36,22 +36,19 @@ GameFrame::GameFrame(QGraphicsView * view, int mainNumbers[6])
     proxyVid = view->scene()->addWidget(warpHoleLabel);
     proxyVid->setPos(mainNumbers[1], mainNumbers[0]);
     hideVideoFreeSpin();
-   // movie->start();
 
+    videoMusic = new QMediaPlayer();
+    //QVideoWidget * videoWid = new QVideoWidget();
 
-    //warpHoleLabel->show();
-   // warpHoleLabel->setVisible(true);
+    videoMusic->setMedia(QUrl("C:/Users/kaihs/Documents/Coding/Bilder/Wurmloch.mp3"));
 
-    /*QMediaPlayer * player = new QMediaPlayer();
-    QVideoWidget * videoWid = new QVideoWidget();
-
-    player->setVideoOutput(videoWid);
+    /*player->setVideoOutput(videoWid);
     player->setMedia(QUrl::fromLocalFile("C:/Users/kaihs/Documents/Coding/Bilder/Warphole.mp4"));
     videoWid->setGeometry(mainNumbers[1], mainNumbers[0], 1280, 720);
     videoWid->show();
     player->setVolume(10);
-    player->play();*/
-
+    player->play();
+*/
 
 }
 
@@ -265,14 +262,10 @@ void GameFrame::playVideoFreeSpin()
     warpHoleLabel->setFixedHeight(720);
     warpHoleLabel->setFixedWidth(1280);
     movie->start();
+    videoMusic->play();
 
-
-    //warpHoleLabel->show();
     warpHoleLabel->setVisible(true);
     setCurrentTime(QDateTime::currentSecsSinceEpoch());
-
-    qDebug() << "in play";
-
 }
 
 void GameFrame::hideVideoFreeSpin()
@@ -280,7 +273,6 @@ void GameFrame::hideVideoFreeSpin()
     movie->stop();
     warpHoleLabel->setVisible(false);
     setVideoIsRunning(false);
-    qDebug() << "in hide";
 }
 
 QMovie *GameFrame::getMovie() const
@@ -321,6 +313,16 @@ bool GameFrame::getVideoIsRunning() const
 void GameFrame::setVideoIsRunning(bool value)
 {
     videoIsRunning = value;
+}
+
+QMediaPlayer *GameFrame::getVideoMusic() const
+{
+    return videoMusic;
+}
+
+void GameFrame::setVideoMusic(QMediaPlayer *value)
+{
+    videoMusic = value;
 }
 
 void GameFrame::highlightWinningLines() {
