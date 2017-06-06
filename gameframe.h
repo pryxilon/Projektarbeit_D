@@ -14,28 +14,6 @@ public:
     GameFrame();
     GameFrame(QGraphicsView *, int[6]);
 
-    // Setter und Getter
-    void setView(QGraphicsView *);
-    QGraphicsView * getView();
-    QMovie *getMovie() const;
-    void setMovie(QMovie *value);
-    QLabel *getWarpHoleLabel() const;
-    void setWarpHoleLabel(QLabel *value);
-    qint64 getCurrentTime() const;
-    void setCurrentTime(const qint64 &value);
-    bool getVideoIsRunning() const;
-    void setVideoIsRunning(bool value);
-    QMediaPlayer *getVideoMusic() const;
-    void setVideoMusic(QMediaPlayer *value);
-    QMediaPlayer *getClickSound() const;
-    void setClickSound(QMediaPlayer *value);
-
-    void setSlots(Slot *, int);
-    int setMaxSpinsFirstSlot();
-    int setAddSpinsOtherSlots();
-    int getFreeSpin() const;
-    void setFreeSpin(int);
-
     // Funktionen
     void initializeSlots(int[6]);
     void gameFrameSlotCycle();
@@ -45,14 +23,35 @@ public:
     void setWinningLinesToZero();
     void checkShowingSquares();
     void checkForWinningLines(int);
+    void resetPlayAndSetGame();
     void playVideoFreeSpin();
     void hideVideoFreeSpin();
-    void playClickSound();
-    void stopClickSound();
+
+    // Setter und Getter
+    void setView(QGraphicsView *);
+    QGraphicsView * getView();
+    QMovie *getMovie() const;
+    void setMovie(QMovie *value);
+    QLabel *getWarpHoleLabel() const;
+    void setWarpHoleLabel(QLabel *value);
+    bool getVideoIsRunning() const;
+    void setVideoIsRunning(bool value);
+    QMediaPlayer *getVideoMusic() const;
+    void setVideoMusic(QMediaPlayer *value);
+
+    void setSlots(Slot *, int);
+    int setMaxSpinsFirstSlot();
+    int setAddSpinsOtherSlots();
+    int getFreeSpin() const;
+    void setFreeSpin(int);
 
     // public Variables
     Slot * slot[5];
     int line[5];
+    int winLineType[5];
+
+    qint64 getCurrentTimeVideo() const;
+    void setCurrentTimeVideo(const qint64 &value);
 
 private:
     QGraphicsView * view;
@@ -60,11 +59,10 @@ private:
     int freeSpin = 0;
     QMovie * movie;
     QLabel * warpHoleLabel;
-    qint64 currentTime;
+    qint64 currentTimeVideo;
     QGraphicsProxyWidget * proxyVid;
     bool videoIsRunning = false;
     QMediaPlayer * videoMusic;
-    QMediaPlayer * clickSound;
 };
 
 #endif // GAMEFRAME_H

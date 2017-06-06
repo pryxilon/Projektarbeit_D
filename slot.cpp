@@ -1,3 +1,4 @@
+#include "music.h"
 #include "slot.h"
 #include "square.h"
 #include <QGraphicsView>
@@ -20,6 +21,8 @@ Slot::Slot(int x, int y, QRectF frameRect, QGraphicsView * view, int id, int mai
     setID(id);
     setRect(x, y, mainNumbers[2], frameRect.height());
     setSpawningY(frameRect.y() - 2 * mainNumbers[3]);
+
+    stopMusic = new Music();
 
     for(int i = 0; i < 6; i++) {                                                    // Es gibt !6! Squares pro Slot, diese bekommen nach einem durchlauf einen neuen Type
         squares[i] = new Square(this->rect(), view, i, setRandomType(i));           // jedes Square wird erstellt
@@ -195,4 +198,23 @@ void Slot::slotSquaresMove()
     }
 }
 
+bool Slot::getFinished() const
+{
+    return finished;
+}
+
+void Slot::setFinished(bool value)
+{
+    finished = value;
+}
+
+Music *Slot::getStopMusic() const
+{
+    return stopMusic;
+}
+
+void Slot::setStopMusic(Music *value)
+{
+    stopMusic = value;
+}
 

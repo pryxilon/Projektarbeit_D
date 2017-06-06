@@ -16,7 +16,7 @@ GameFrame::GameFrame(QGraphicsView * view, int mainNumbers[6])
 {
     setRect((view->width() - 5 * mainNumbers[2] - 4 * mainNumbers[4]) / 2, mainNumbers[0], 5 * mainNumbers[2] + 4 * mainNumbers[4], mainNumbers[2] * 3);
     setView(view);
-    setCurrentTime(QDateTime::currentSecsSinceEpoch());
+    setCurrentTimeVideo(QDateTime::currentSecsSinceEpoch());
 
     initializeSlots(mainNumbers);
     setWinningLinesToZero();
@@ -31,8 +31,6 @@ GameFrame::GameFrame(QGraphicsView * view, int mainNumbers[6])
     videoMusic = new QMediaPlayer();
     videoMusic->setMedia(QUrl("C:/Users/kaihs/Documents/Coding/Bilder/Wurmloch.mp3"));
 
-    clickSound = new QMediaPlayer();
-    clickSound->setMedia(QUrl("C:/Users/kaihs/Documents/Coding/Bilder/click.mp3"));
 
     hideVideoFreeSpin();
 }
@@ -67,16 +65,6 @@ void GameFrame::setWarpHoleLabel(QLabel *value)
     warpHoleLabel = value;
 }
 
-qint64 GameFrame::getCurrentTime() const
-{
-    return currentTime;
-}
-
-void GameFrame::setCurrentTime(const qint64 &value)
-{
-    currentTime = value;
-}
-
 bool GameFrame::getVideoIsRunning() const
 {
     return videoIsRunning;
@@ -96,7 +84,6 @@ void GameFrame::setVideoMusic(QMediaPlayer *value)
 {
     videoMusic = value;
 }
-
 
 int GameFrame::getFreeSpin() const
 {
@@ -153,9 +140,17 @@ void GameFrame::gameFrameSlotCycle()                        // Verantwortlich f�
                                                                             // die Quadrate des Slots (hier um 5 Pixel) verschoben werden
             }
         }
-        if(spin == maxSpins[0] || spin == maxSpins[1] || spin == maxSpins[2] || spin == maxSpins[3] || spin == maxSpins[4]) {
-            stopClickSound();
-            playClickSound();
+
+        if(spin == maxSpins[0]) {
+            slot[0]->getStopMusic()->playClickSound();
+        } else if(spin == maxSpins[0] + maxSpins[1]) {
+            slot[1]->getStopMusic()->playClickSound();
+        } else if(spin == maxSpins[0] + maxSpins[1] + maxSpins[2]) {
+            slot[2]->getStopMusic()->playClickSound();
+        } else if(spin == maxSpins[0] + maxSpins[1] + maxSpins[2] + maxSpins[3]) {
+            slot[3]->getStopMusic()->playClickSound();
+        } else if(spin == maxSpins[0] + maxSpins[1] + maxSpins[2] + maxSpins[3] + maxSpins[4]) {
+            slot[4]->getStopMusic()->playClickSound();
         }
     }
 }
@@ -225,9 +220,12 @@ void GameFrame::checkForWinningLines(int count) {                        // show
             type = shownSquares[0][i]->getType();                                                                                                                   // -----
             if(type < 4 && type != shownSquares[2][i]->getType() && !(shownSquares[2][i]->getType() == 4)){
                 line[i] = 2;
+                winLineType[i] = type;
             }
-            if(shownSquares[0][i]->getType() == 4 && shownSquares[1][i]->getType() == 4){
+            if(shownSquares[0][i]->getType() == 4 &&
+                    shownSquares[1][i]->getType() == 4){
                 line[i] = 3;
+
                 if(shownSquares[2][i]->getType() == shownSquares[3][i]->getType() || (shownSquares[3][i]->getType() == 4)){
                     if(shownSquares[2][i]->getType() == shownSquares[4][i]->getType() || (shownSquares[4][i]->getType() == 4)){
                         line[i] = 5;
@@ -246,62 +244,127 @@ void GameFrame::checkForWinningLines(int count) {                        // show
                     }
                 }
             }
+
+            if(type != 4){
+                winLineType[i] = type;
+            } else if(shownSquares[1][i]->getType() != 4) {
+                winLineType[i] = shownSquares[1][i]->getType();
+            } else if(shownSquares[2][i]->getType() != 4) {
+                winLineType[i] = shownSquares[2][i]->getType();
+            } else if(shownSquares[3][i]->getType() != 4) {
+                winLineType[i] = shownSquares[3][i]->getType();
+            } else if(shownSquares[4][i]->getType() != 4) {
+                winLineType[i] = shownSquares[4][i]->getType();
+            } else {
+                winLineType[i] = 4;
+            }
         }
     }
 
-    if(shownSquares[0][0]->getType() == shownSquares[1][1]->getType() || (shownSquares[0][0]->getType() == 4) || (shownSquares[1][1]->getType() == 4)) {            //  o\ /o
+    if(shownSquares[0][0]->getType() == shownSquares[1][1]->getType() ||
+            (shownSquares[0][0]->getType() == 4) || (shownSquares[1][1]->getType() == 4)) {            //  o\ /o
         type = shownSquares[0][0]->getType();                                                                                                                       //    o
-        if(type < 4 && type != shownSquares[2][2]->getType() && !(shownSquares[2][2]->getType() == 4)){
+        if(type < 4 && type != shownSquares[2][2]->getType() &&
+                !(shownSquares[2][2]->getType() == 4)){
             line[3] = 2;
         }
-        if(shownSquares[0][0]->getType() == 4 && shownSquares[1][1]->getType() == 4){
+        if(shownSquares[0][0]->getType() == 4 &&
+                shownSquares[1][1]->getType() == 4){
             line[3] = 3;
-            if(shownSquares[2][2]->getType() == shownSquares[3][1]->getType() || (shownSquares[3][1]->getType() == 4)){
-                if(shownSquares[2][2]->getType() == shownSquares[4][0]->getType() || (shownSquares[4][0]->getType() == 4)){
+            if(shownSquares[2][2]->getType() == shownSquares[3][1]->getType() ||
+                    (shownSquares[3][1]->getType() == 4)){
+                if(shownSquares[2][2]->getType() == shownSquares[4][0]->getType() ||
+                        (shownSquares[4][0]->getType() == 4)){
                     line[3] = 5;
                 } else {
                     line[3] = 4;
                 }
             }
         }
-        if(type == shownSquares[2][2]->getType() || (shownSquares[2][2]->getType() == 4)){
+        if(type == shownSquares[2][2]->getType() ||
+                (shownSquares[2][2]->getType() == 4)){
             line[3] = 3;
-            if(type == shownSquares[3][1]->getType() || (shownSquares[3][1]->getType() == 4)) {
-                if(type == shownSquares[4][0]->getType() || (shownSquares[4][0]->getType() == 4)) {
+            if(type == shownSquares[3][1]->getType() ||
+                    (shownSquares[3][1]->getType() == 4)) {
+                if(type == shownSquares[4][0]->getType() ||
+                        (shownSquares[4][0]->getType() == 4)) {
                     line[3] = 5;
                 } else {
                     line[3] = 4;
                 }
             }
+        }
+
+        if(type != 4){
+            winLineType[3] = type;
+        } else if(shownSquares[1][1]->getType() != 4) {
+            winLineType[3] = shownSquares[1][1]->getType();
+        } else if(shownSquares[2][2]->getType() != 4) {
+            winLineType[3] = shownSquares[2][2]->getType();
+        } else if(shownSquares[3][1]->getType() != 4) {
+            winLineType[3] = shownSquares[3][1]->getType();
+        } else if(shownSquares[4][0]->getType() != 4) {
+            winLineType[3] = shownSquares[4][0]->getType();
+        } else {
+            winLineType[3] = 4;
         }
     }
 
     if(shownSquares[0][2]->getType() == shownSquares[1][1]->getType() || (shownSquares[0][2]->getType() == 4) || (shownSquares[1][1]->getType() == 4)) {            //    o
         type = shownSquares[0][2]->getType();                                                                                                                       //  o/ \o
-        if(type < 4 && type != shownSquares[2][0]->getType() && !(shownSquares[2][0]->getType() == 4)){                                                             // o/   \o
+        if(type < 4 && type != shownSquares[2][0]->getType() &&!(shownSquares[2][0]->getType() == 4)){                                                              // o/   \o
             line[4] = 2;
         }
-        if(shownSquares[0][2]->getType() == 4 && shownSquares[1][1]->getType() == 4){
+        if(shownSquares[0][2]->getType() == 4 &&
+                shownSquares[1][1]->getType() == 4){
             line[4] = 3;
-            if(shownSquares[2][0]->getType() == shownSquares[3][1]->getType() || (shownSquares[3][1]->getType() == 4)){
-                if(shownSquares[2][0]->getType() == shownSquares[4][2]->getType() || (shownSquares[4][2]->getType() == 4)){
+            if(shownSquares[2][0]->getType() == shownSquares[3][1]->getType() ||
+                    (shownSquares[3][1]->getType() == 4)){
+                if(shownSquares[2][0]->getType() == shownSquares[4][2]->getType() ||
+                        (shownSquares[4][2]->getType() == 4)){
                     line[4] = 5;
                 } else {
                     line[4] = 4;
                 }
             }
         }
-        if(type == shownSquares[2][0]->getType() || (shownSquares[2][0]->getType() == 4)){
+        if(type == shownSquares[2][0]->getType() ||
+                (shownSquares[2][0]->getType() == 4)){
             line[4] = 3;
-            if(type == shownSquares[3][1]->getType() || (shownSquares[3][1]->getType() == 4)){
-                if(type == shownSquares[4][2]->getType() || (shownSquares[4][2]->getType() == 4)) {
+            if(type == shownSquares[3][1]->getType() ||
+                    (shownSquares[3][1]->getType() == 4)){
+                if(type == shownSquares[4][2]->getType() ||
+                        (shownSquares[4][2]->getType() == 4)) {
                     line[4] = 5;
                 } else {
                     line[4] = 4;
                 }
             }
+        }
+
+        if(type != 4){
+            winLineType[4] = type;
+        } else if(shownSquares[1][1]->getType() != 4) {
+            winLineType[4] = shownSquares[1][1]->getType();
+        } else if(shownSquares[2][0]->getType() != 4) {
+            winLineType[4] = shownSquares[2][0]->getType();
+        } else if(shownSquares[3][1]->getType() != 4) {
+            winLineType[4] = shownSquares[3][1]->getType();
+        } else if(shownSquares[4][2]->getType() != 4) {
+            winLineType[4] = shownSquares[4][2]->getType();
+        } else {
+            winLineType[4] = 4;
         }
     }
+}
+
+void GameFrame::resetPlayAndSetGame()
+{
+    dehighlightWinningLines();              // alle "WinnigLines" "ausschalten"
+    setWinningLinesToZero();                // "Winninglines" m체ssen vor jeder Runde auf 0 gesetzt werden
+    gameFrameSlotCycle();                   // soll einen kompletten durchlauf der Slots durchf체hren, wie in einer Spielrunde, soll normal in der "hauptschleife" wiederholt werden
+    checkShowingSquares();                  // 체berpr체fe die zu sehendes Felder und 체berpr체fe ob gewonnen wurde
+    highlightWinningLines();
 }
 
 void GameFrame::playVideoFreeSpin()
@@ -313,7 +376,7 @@ void GameFrame::playVideoFreeSpin()
     videoMusic->play();
 
     warpHoleLabel->setVisible(true);
-    setCurrentTime(QDateTime::currentSecsSinceEpoch());
+    setCurrentTimeVideo(QDateTime::currentSecsSinceEpoch());
 }
 
 void GameFrame::hideVideoFreeSpin()
@@ -324,22 +387,14 @@ void GameFrame::hideVideoFreeSpin()
     videoMusic->stop();
 }
 
-void GameFrame::playClickSound() {
-    clickSound->play();
-}
-
-void GameFrame::stopClickSound() {
-    clickSound->stop();
-}
-
-QMediaPlayer *GameFrame::getClickSound() const
+qint64 GameFrame::getCurrentTimeVideo() const
 {
-    return clickSound;
+    return currentTimeVideo;
 }
 
-void GameFrame::setClickSound(QMediaPlayer *value)
+void GameFrame::setCurrentTimeVideo(const qint64 &value)
 {
-    clickSound = value;
+    currentTimeVideo = value;
 }
 
 void GameFrame::highlightWinningLines() {

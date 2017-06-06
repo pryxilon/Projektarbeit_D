@@ -3,6 +3,7 @@
 
 #include <QGraphicsRectItem>
 #include <QGraphicsView>
+#include "music.h"
 #include "square.h"
 
 class Slot: public QGraphicsRectItem {
@@ -37,6 +38,12 @@ public:
     Square * squares[6];
     Square * staticSquares[3];
 
+    bool getFinished() const;
+    void setFinished(bool value);
+
+    Music *getStopMusic() const;
+    void setStopMusic(Music *value);
+
 private:
     int countSquares;
     QGraphicsView * view;
@@ -47,6 +54,8 @@ private:
     int counter = 0;
     int counterPic = 0;
     int counterNum = 0;
+    bool finished = false;
+    Music * stopMusic;
 };
 
 #endif // SLOT_H
