@@ -44,9 +44,6 @@ public:
     // Hauptfunktion Square
     void moveSquare();
 
-    int returnSquareByPosition(int);
-
-
 private:
     QRectF rect;
     QGraphicsView * view;

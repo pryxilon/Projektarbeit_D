@@ -4,3 +4,13 @@ CreditOutput::CreditOutput()
 {
 
 }
+
+void CreditOutput::betOutput()
+{
+
+}
+
+void CreditOutput::creditOutput()
+{
+
+}

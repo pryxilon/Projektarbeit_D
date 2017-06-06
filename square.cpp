@@ -141,7 +141,7 @@ void Square::setPixmapOfStaticSquare(int i)
 {
     switch(i){
     case 0: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/empty240.png")); break;
-    case 1: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/win240.png")); break;
+    case 1: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/WinGIF.gif")); break;
     }
 }
 
@@ -167,12 +167,4 @@ void Square::moveSquare()
     } else {
         setPos(x(),y() + getStepsize());
     }
-}
-
-int Square::returnSquareByPosition(int y)
-{
-    if(y == this->y()) {
-        return type;
-    }
-    return -1;
 }

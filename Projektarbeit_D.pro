@@ -31,7 +31,11 @@ SOURCES += main.cpp \
     borderpart.cpp \
     separator.cpp \
     slot.cpp \
-    square.cpp
+    square.cpp \
+    credit.cpp \
+    music.cpp \
+    aminations.cpp \
+    creditoutput.cpp
 
 HEADERS  += \
     gameframe.h \
@@ -40,7 +44,11 @@ HEADERS  += \
     borderpart.h \
     separator.h \
     slot.h \
-    square.h
+    square.h \
+    credit.h \
+    music.h \
+    aminations.h \
+    creditoutput.h
 
 FORMS    +=
 
