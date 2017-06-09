@@ -63,6 +63,7 @@ private:
     QGraphicsProxyWidget * proxyVid;
     bool videoIsRunning = false;
     QMediaPlayer * videoMusic;
+    Music * winSound;
 };
 
 #endif // GAMEFRAME_H

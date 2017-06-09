@@ -34,7 +34,6 @@ Border::Border(QGraphicsView * view, int mainNumbers[6])
     view->scene()->addItem(freeSpinHeader);
 
     setStartButton();
-    setVidButton();
 }
 
 void Border::setStartButton()
@@ -45,16 +44,6 @@ void Border::setStartButton()
                                "QPushButton:pressed {background: #aa0000}");
     QGraphicsProxyWidget * proxy1 = getView()->scene()->addWidget(startButton);
     proxy1->setPos(1700, 800);
-}
-
-void Border::setVidButton()
-{
-    vidButton = new QPushButton("Vid");
-    vidButton->setStyleSheet("QPushButton {background : red; border-style: none; font: bold 30px; color: #ffffff; padding: 6px; } "
-                               "QPushButton:hover {background: #ff5555} "
-                               "QPushButton:pressed {background: #aa0000}");
-    QGraphicsProxyWidget * proxy1 = getView()->scene()->addWidget(vidButton);
-    proxy1->setPos(1700, 600);
 }
 
 void Border::setView(QGraphicsView * view)

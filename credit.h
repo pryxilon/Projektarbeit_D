@@ -24,11 +24,15 @@ public:
     int getSymbolValue(int, int);
     void betting();
 
+    int getLastGain() const;
+    void setLastGain(int value);
+
 private:
     int credit = 0;
     GameFrame * gf;
     int bet = 100;
     int const maxBet = 200;
+    int lastGain;
 };
 
 #endif // CREDIT_H

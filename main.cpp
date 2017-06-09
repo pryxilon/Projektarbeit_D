@@ -7,10 +7,9 @@
 #include "border.h"
 #include "background.h"
 #include "credit.h"
+#include "creditoutput.h"
 #include <QDebug>
-#include <QTimer>
 #include <QDateTime>
-#include <QThread>
 
 
 int main(int argc, char *argv[])
@@ -72,41 +71,25 @@ int main(int argc, char *argv[])
     Credit * credits = new Credit(gf);
     credits->setCredit(5000);
 
-    QLabel * creditLabel = new QLabel();
-    QGraphicsProxyWidget * proxy = scene->addWidget(creditLabel);
-    proxy->setPos(1400, 900);
-    creditLabel->setFixedWidth(150);
-    creditLabel->setFixedHeight(50);
-    creditLabel->setMargin(15);
-    creditLabel->setStyleSheet("background-color: #222222;"
-                               "opacity: 0.5;"
-                               "font: bold 20px;"
-                               "color: #888800;"
-                               "border: 5px;"
-                               "border-color: #888800");
+    CreditOutput * betHeightLabel = new CreditOutput(320, view);
+    CreditOutput * lastWinLabel = new CreditOutput(1100, view);
+    CreditOutput * creditLabel = new CreditOutput(1360, view);
 
-    QLabel * betLabel = new QLabel();
-    QGraphicsProxyWidget * proxyBet = scene->addWidget(betLabel);
-    proxyBet->setPos(1100, 900);
-    betLabel->setFixedWidth(150);
-    betLabel->setFixedHeight(50);
-    betLabel->setMargin(15);
-    betLabel->setStyleSheet("background-color: #222222;"
-                               "opacity: 0.5;"
-                               "font: bold 20px;"
-                               "color: #888800;"
-                               "border: 5px;"
-                               "border-color: #888800");
+    creditLabel->setText(QString::number(credits->getCredit()));
 
     while(1) {
-        creditLabel->setText(QString::number(credits->getCredit()));
+        betHeightLabel->setText(QString::number(credits->getBet()));
+        lastWinLabel->setText(QString::number(credits->getLastGain()));
+
         if((bf->startButton->isDown() && gf->getVideoIsRunning() == false)) {
             credits->betting();
             creditLabel->setText(QString::number(credits->getCredit()));
+
             gf->resetPlayAndSetGame();
+
+
             credits->addWonCredits();
             creditLabel->setText(QString::number(credits->getCredit()));
-            betLabel->setText("last win");
         }
 
         if(gf->getFreeSpin() != 0) {
@@ -118,21 +101,15 @@ int main(int argc, char *argv[])
             if((gf->getVideoIsRunning() == true) && ((gf->getCurrentTimeVideo() + 4) - QDateTime::currentSecsSinceEpoch() < 0)) {
                 gf->hideVideoFreeSpin();
 
+
                 while(gf->getFreeSpin() > 0) {
+                    lastWinLabel->setText(QString::number(credits->getLastGain()));
                     gf->resetPlayAndSetGame();
                     credits->addWonCredits();
                     creditLabel->setText(QString::number(credits->getCredit()));
                     gf->setFreeSpin(gf->getFreeSpin() - 1);
                 }
             }
-        }
-
-        if(bf->vidButton->isDown() && gf->getVideoIsRunning() == false) {                       // diese Schleife + Inhalt muss später entfernt werden, wenn nicht mehr getestet werden muss
-            gf->playVideoFreeSpin();
-        }
-
-        if((gf->getVideoIsRunning() == true) && ((gf->getCurrentTimeVideo() + 4) - QDateTime::currentSecsSinceEpoch() < 0)) {
-            gf->hideVideoFreeSpin();
         }
 
         el.processEvents();

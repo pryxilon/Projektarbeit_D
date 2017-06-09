@@ -1,15 +1,23 @@
 #ifndef CREDITOUTPUT_H
 #define CREDITOUTPUT_H
 
+#include <QGraphicsView>
+#include <QLabel>
 
-class CreditOutput
+
+
+class CreditOutput: public QLabel
 {
 public:
     CreditOutput();
+    CreditOutput(int, QGraphicsView *);
 
-    void betOutput();
-    void creditOutput();
-    void lastWinOutput();
+    void printLabel(int);
+    QGraphicsView *getView() const;
+    void setView(QGraphicsView *value);
+
+private:
+    QGraphicsView * view;
 };
 
 #endif // CREDITOUTPUT_H

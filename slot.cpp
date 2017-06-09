@@ -23,6 +23,7 @@ Slot::Slot(int x, int y, QRectF frameRect, QGraphicsView * view, int id, int mai
     setSpawningY(frameRect.y() - 2 * mainNumbers[3]);
 
     stopMusic = new Music();
+    stopMusic->getSound()->setMedia(QUrl("C:/Users/kaihs/Documents/Coding/Bilder/click1.mp3"));
 
     for(int i = 0; i < 6; i++) {                                                    // Es gibt !6! Squares pro Slot, diese bekommen nach einem durchlauf einen neuen Type
         squares[i] = new Square(this->rect(), view, i, setRandomType(i));           // jedes Square wird erstellt
