@@ -9,14 +9,12 @@ class Music: public QObject
     Q_OBJECT
 public:
     Music();
-    void playClickSound();
-    void stopClickSound();
 
-    QMediaPlayer *getClickSound() const;
-    void setClickSound(QMediaPlayer *value);
+    QMediaPlayer *getSound() const;
+    void setSound(QMediaPlayer *value);
 
 private:
-    QMediaPlayer * clickSound;
+    QMediaPlayer * sound;
 };
 
 #endif // MUSIC_H

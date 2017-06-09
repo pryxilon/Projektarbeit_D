@@ -11,12 +11,10 @@ public:
     Border(QGraphicsView *, int[6]);
 
     void setStartButton();
-    void setVidButton();
 
     void setView(QGraphicsView *);
     QGraphicsView * getView();
     QPushButton * startButton;
-    QPushButton * vidButton;
 
     void setExitButton();
 private:

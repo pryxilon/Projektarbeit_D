@@ -34,8 +34,8 @@ SOURCES += main.cpp \
     square.cpp \
     credit.cpp \
     music.cpp \
-    aminations.cpp \
-    creditoutput.cpp
+    creditoutput.cpp \
+    animation.cpp
 
 HEADERS  += \
     gameframe.h \
@@ -47,8 +47,8 @@ HEADERS  += \
     square.h \
     credit.h \
     music.h \
-    aminations.h \
-    creditoutput.h
+    creditoutput.h \
+    animation.h
 
 FORMS    +=
 

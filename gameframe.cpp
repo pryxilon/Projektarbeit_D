@@ -5,7 +5,6 @@
 #include <QGraphicsView>
 #include <QDebug>
 #include <QEventLoop>
-#include <QThread>
 #include <QLabel>
 #include <QGraphicsProxyWidget>
 #include <QtMultimedia/QtMultimedia>
@@ -25,11 +24,16 @@ GameFrame::GameFrame(QGraphicsView * view, int mainNumbers[6])
     warpHoleLabel->setMask((new QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Warphole.gif"))->mask());
 
     movie = new QMovie("C:/Users/kaihs/Documents/Coding/Bilder/Warphole.gif");
+
+    videoMusic = new QMediaPlayer();
+    videoMusic->setMedia(QUrl("C:/Users/kaihs/Documents/Coding/Bilder/Wurmloch.mp3"));
+
+    winSound = new Music();
+    winSound->getSound()->setMedia(QUrl("C:/Users/kaihs/Documents/Coding/Bilder/WinSound.mp3"));
+
     warpHoleLabel->setMovie(movie);
     proxyVid = view->scene()->addWidget(warpHoleLabel);
     proxyVid->setPos(mainNumbers[1], mainNumbers[0]);
-    videoMusic = new QMediaPlayer();
-    videoMusic->setMedia(QUrl("C:/Users/kaihs/Documents/Coding/Bilder/Wurmloch.mp3"));
 
 
     hideVideoFreeSpin();
@@ -65,7 +69,7 @@ void GameFrame::setWarpHoleLabel(QLabel *value)
     warpHoleLabel = value;
 }
 
-bool GameFrame::getVideoIsRunning() const
+/*bool GameFrame::getVideoIsRunning() const
 {
     return videoIsRunning;
 }
@@ -73,7 +77,7 @@ bool GameFrame::getVideoIsRunning() const
 void GameFrame::setVideoIsRunning(bool value)
 {
     videoIsRunning = value;
-}
+}*/
 
 QMediaPlayer *GameFrame::getVideoMusic() const
 {
@@ -142,15 +146,15 @@ void GameFrame::gameFrameSlotCycle()                        // Verantwortlich f�
         }
 
         if(spin == maxSpins[0]) {
-            slot[0]->getStopMusic()->playClickSound();
+            slot[0]->getStopMusic()->getSound()->play();
         } else if(spin == maxSpins[0] + maxSpins[1]) {
-            slot[1]->getStopMusic()->playClickSound();
+            slot[1]->getStopMusic()->getSound()->play();
         } else if(spin == maxSpins[0] + maxSpins[1] + maxSpins[2]) {
-            slot[2]->getStopMusic()->playClickSound();
+            slot[2]->getStopMusic()->getSound()->play();
         } else if(spin == maxSpins[0] + maxSpins[1] + maxSpins[2] + maxSpins[3]) {
-            slot[3]->getStopMusic()->playClickSound();
+            slot[3]->getStopMusic()->getSound()->play();
         } else if(spin == maxSpins[0] + maxSpins[1] + maxSpins[2] + maxSpins[3] + maxSpins[4]) {
-            slot[4]->getStopMusic()->playClickSound();
+            slot[4]->getStopMusic()->getSound()->play();
         }
     }
 }
@@ -365,9 +369,14 @@ void GameFrame::resetPlayAndSetGame()
     gameFrameSlotCycle();                   // soll einen kompletten durchlauf der Slots durchf체hren, wie in einer Spielrunde, soll normal in der "hauptschleife" wiederholt werden
     checkShowingSquares();                  // 체berpr체fe die zu sehendes Felder und 체berpr체fe ob gewonnen wurde
     highlightWinningLines();
+
+
+    if((line[0] != 0) || (line[1] != 0) || (line[2] != 0) || (line[3] != 0) || (line[4] != 0)) {
+        winSound->getSound()->play();
+    }
 }
 
-void GameFrame::playVideoFreeSpin()
+/*void GameFrame::playVideoFreeSpin()
 {
     setVideoIsRunning(true);
     warpHoleLabel->setFixedHeight(720);
@@ -395,7 +404,7 @@ qint64 GameFrame::getCurrentTimeVideo() const
 void GameFrame::setCurrentTimeVideo(const qint64 &value)
 {
     currentTimeVideo = value;
-}
+}*/
 
 void GameFrame::highlightWinningLines() {
     for(int i = 0; i < 3; i++) {

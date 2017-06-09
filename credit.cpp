@@ -3,7 +3,7 @@
 Credit::Credit(GameFrame * gf)
 {
     this->gf = gf;
-
+    setLastGain(0);
 }
 
 int Credit::getCredit() const
@@ -25,9 +25,14 @@ void Credit::GameOver()
 
 void Credit::addWonCredits()
 {
+    if((gf->line[0] != 0) || (gf->line[1] != 0) || (gf->line[2] != 0) || (gf->line[3] != 0) || (gf->line[4] != 0)) {
+        setLastGain(0);
+    }
+
     for(int i = 0; i < 5; i++) {
         if(gf->line[i] != 0) {
             setCredit(getCredit() + bet * getSymbolValue(gf->winLineType[i], gf->line[i]));
+            setLastGain(getLastGain() + bet * getSymbolValue(gf->winLineType[i], gf->line[i]));
         }
     }
 }
@@ -164,4 +169,14 @@ int Credit::getSymbolValue(int type, int length)
 void Credit::betting()
 {
     setCredit(getCredit() - bet);
+}
+
+int Credit::getLastGain() const
+{
+    return lastGain;
+}
+
+void Credit::setLastGain(int value)
+{
+    lastGain = value;
 }

@@ -2,26 +2,16 @@
 
 Music::Music()
 {
-    clickSound = new QMediaPlayer();
-    clickSound->setMedia(QUrl("C:/Users/kaihs/Documents/Coding/Bilder/click1.mp3"));
+    sound = new QMediaPlayer();
+    //sound->setMedia(QUrl("C:/Users/kaihs/Documents/Coding/Bilder/click1.mp3"));
 }
 
-void Music::playClickSound()
+QMediaPlayer *Music::getSound() const
 {
-    clickSound->play();
+    return sound;
 }
 
-void Music::stopClickSound()
+void Music::setSound(QMediaPlayer *value)
 {
-    clickSound->stop();
-}
-
-QMediaPlayer *Music::getClickSound() const
-{
-    return clickSound;
-}
-
-void Music::setClickSound(QMediaPlayer *value)
-{
-    clickSound = value;
+    sound = value;
 }
