@@ -1,7 +1,9 @@
 #ifndef ANIMATION_H
 #define ANIMATION_H
 
+#include <QGraphicsView>
 #include <QLabel>
+#include <QMovie>
 
 
 
@@ -9,20 +11,26 @@ class Animation
 {
 public:
     Animation();
-    Animation(int[6]);
+    Animation(QGraphicsView *, int, int);
     QLabel *getLabel() const;
     void setLabel(QLabel *value);
 
-    void playVideoFreeSpin();
-    void hideVideoFreeSpin();
+    void playAnimation();
+    void stopAnimation();
     qint64 getCurrentTimeVideo() const;
     void setCurrentTimeVideo(const qint64 &value);
-    bool getVideoIsRunning() const;
-    void setVideoIsRunning(bool value);
+    bool getAnimationIsRunning() const;
+    void setAnimationIsRunning(bool value);
+
+    void setAnimationNonvisible();
+
 private:
     QLabel * label;
     qint64 currentTimeVideo;
     bool videoIsRunning;
+    QMovie * animation;
+    QGraphicsProxyWidget * proxyVid;
+    bool animationIsRunning;
 };
 
 #endif // ANIMATION_H

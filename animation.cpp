@@ -1,6 +1,7 @@
 #include "animation.h"
 #include <QPixmap>
 #include <QGraphicsProxyWidget>
+#include <QGraphicsView>
 #include <QtMultimedia/QtMultimedia>
 #include <QtMultimedia/QMediaPlayer>
 #include <QtMultimediaWidgets/QVideoWidget>
@@ -9,15 +10,17 @@ Animation::Animation() {
 
 }
 
-Animation::Animation(int mainNumbers[6])               // Animation für Freispiele
+Animation::Animation(QGraphicsView * view, int x, int y)               // Animation für Freispiele
 {
-    /*label = new QLabel();
-    label->setMask((new QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Warphole.gif"))->mask());
+    label = new QLabel();
+    label->setMask((new QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/WinGIF2.gif"))->mask());
 
-    movie = new QMovie("C:/Users/kaihs/Documents/Coding/Bilder/Warphole.gif");
-    label->setMovie(movie);
-    proxyVid = view->scene()->addWidget(warpHoleLabel);
-    proxyVid->setPos(mainNumbers[1], mainNumbers[0]);*/
+    animation = new QMovie("C:/Users/kaihs/Documents/Coding/Bilder/WinGIF2.gif");
+    label->setMovie(animation);
+    proxyVid = view->scene()->addWidget(label);
+    proxyVid->setPos(x, y);
+    label->setVisible(false);
+    //proxyVid->setPos(mainNumbers[1] + slot * mainNumbers[2] + slot * mainNumbers[4], mainNumbers[0] + pos * mainNumbers[3]);
 }
 
 QLabel *Animation::getLabel() const
@@ -30,24 +33,26 @@ void Animation::setLabel(QLabel *value)
     label = value;
 }
 
-void Animation::playVideoFreeSpin()
+void Animation::playAnimation()
 {
-    /*setVideoIsRunning(true);
-    label->setFixedHeight(720);
-    label->setFixedWidth(1280);
-    movie->start();
-    videoMusic->play();
+    setAnimationIsRunning(true);
+    label->setFixedHeight(240);
+    label->setFixedWidth(240);
+    animation->start();
 
     label->setVisible(true);
-    setCurrentTimeVideo(QDateTime::currentSecsSinceEpoch());*/
+    setCurrentTimeVideo(QDateTime::currentSecsSinceEpoch());
 }
 
-void Animation::hideVideoFreeSpin()
+void Animation::stopAnimation()
 {
-    /*movie->stop();
+    animation->stop();
+    setAnimationNonvisible();
+    setAnimationIsRunning(false);
+}
+
+void Animation::setAnimationNonvisible() {
     label->setVisible(false);
-    setVideoIsRunning(false);
-    videoMusic->stop();*/
 }
 
 qint64 Animation::getCurrentTimeVideo() const
@@ -60,13 +65,13 @@ void Animation::setCurrentTimeVideo(const qint64 &value)
     currentTimeVideo = value;
 }
 
-bool Animation::getVideoIsRunning() const
+bool Animation::getAnimationIsRunning() const
 {
-    return videoIsRunning;
+    return animationIsRunning;
 }
 
-void Animation::setVideoIsRunning(bool value)
+void Animation::setAnimationIsRunning(bool value)
 {
-    videoIsRunning = value;
+    animationIsRunning = value;
 }
 

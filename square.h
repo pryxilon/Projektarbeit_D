@@ -1,6 +1,8 @@
 #ifndef SQUARE_H
 #define SQUARE_H
 
+#include "animation.h"
+
 #include <QGraphicsPixmapItem>
 #include <QRectF>
 #include <QObject>
@@ -11,6 +13,7 @@ class Square: public QGraphicsPixmapItem {
 public:
     Square();
     Square(QRectF, QGraphicsView *, int);
+    Square(int, int, QGraphicsView *, int);
     Square(QRectF, QGraphicsView *, int, int);
     void setSlotRect(QRectF);
     QRectF getSlotRect();
@@ -26,7 +29,7 @@ public:
     int getStepsize() const;
     void setStepsize(int value);
     void setPixmapOfSquare(int);
-    void setPixmapOfStaticSquare(int);
+    void setAnimationOfStaticSquare();
     int getPosY();
 
     // Y-Axis
@@ -44,6 +47,12 @@ public:
     // Hauptfunktion Square
     void moveSquare();
 
+    Animation *getWinAnimation() const;
+    void setWinAnimation(Animation *value);
+
+    void setPixmapOfStaticSquare(int type);
+
+
 private:
     QRectF rect;
     QGraphicsView * view;
@@ -56,6 +65,7 @@ private:
     int sqHeight, sqWidth;
     int type;
     int stepsize;
+    Animation * winAnimation;
 };
 
 #endif // SQUARE_H

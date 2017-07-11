@@ -8,9 +8,10 @@
 #include "background.h"
 #include "credit.h"
 #include "creditoutput.h"
+#include "borderpart.h"
+#include "globals.h"
 #include <QDebug>
 #include <QDateTime>
-
 
 int main(int argc, char *argv[])
 {
@@ -28,13 +29,6 @@ int main(int argc, char *argv[])
     view->setFixedSize(1920, 1080);
     view->setSceneRect(0, 0, 1920, 1080);
 
-    int topMargin = 140;
-    int sideMargin = 320;
-    int squareWidth = 240;
-    int squareHeight = 240;
-    int separatorWidth = 20;
-    int frameBorderWidth = 10;
-
     int mainNumbers[6];
     mainNumbers[0] = topMargin;
     mainNumbers[1] = sideMargin;
@@ -43,18 +37,12 @@ int main(int argc, char *argv[])
     mainNumbers[4] = separatorWidth;
     mainNumbers[5] = frameBorderWidth;
 
-
+    QEventLoop el;
     Background * bg = new Background();
     scene->addItem(bg);
 
-    QEventLoop el;
-
     GameFrame * gf = new GameFrame(view, mainNumbers);
-
     scene->addItem(gf);
-
-    //gf->setFlag(QGraphicsItem::ItemIsFocusable);
-    //gf->setFocus();
 
     Slot * slot[5];
     for(int i = 0; i < 5; i++){
@@ -74,19 +62,22 @@ int main(int argc, char *argv[])
     CreditOutput * betHeightLabel = new CreditOutput(320, view);
     CreditOutput * lastWinLabel = new CreditOutput(1100, view);
     CreditOutput * creditLabel = new CreditOutput(1360, view);
+    CreditOutput * freeSpinLabel = new CreditOutput(view);
+    QGraphicsProxyWidget * proxy;
 
     creditLabel->setText(QString::number(credits->getCredit()));
+
+    //gf->setFreeSpin(5);
 
     while(1) {
         betHeightLabel->setText(QString::number(credits->getBet()));
         lastWinLabel->setText(QString::number(credits->getLastGain()));
 
-        if((bf->startButton->isDown() && gf->getVideoIsRunning() == false)) {
+        if((bf->startButton->isDown() && gf->getVideoIsRunning() == false && gf->slot[0]->staticSquares[0])) {
             credits->betting();
             creditLabel->setText(QString::number(credits->getCredit()));
 
             gf->resetPlayAndSetGame();
-
 
             credits->addWonCredits();
             creditLabel->setText(QString::number(credits->getCredit()));
@@ -101,14 +92,17 @@ int main(int argc, char *argv[])
             if((gf->getVideoIsRunning() == true) && ((gf->getCurrentTimeVideo() + 4) - QDateTime::currentSecsSinceEpoch() < 0)) {
                 gf->hideVideoFreeSpin();
 
-
+                proxy = scene->addWidget(freeSpinLabel);
+                proxy->setPos(320, 50);
                 while(gf->getFreeSpin() > 0) {
+                    freeSpinLabel->setText("Freispiele: " + QString::number(gf->getFreeSpin()));
                     lastWinLabel->setText(QString::number(credits->getLastGain()));
                     gf->resetPlayAndSetGame();
                     credits->addWonCredits();
                     creditLabel->setText(QString::number(credits->getCredit()));
                     gf->setFreeSpin(gf->getFreeSpin() - 1);
                 }
+                scene->removeItem(freeSpinLabel->graphicsProxyWidget());
             }
         }
 

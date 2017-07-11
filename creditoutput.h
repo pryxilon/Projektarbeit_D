@@ -9,7 +9,7 @@
 class CreditOutput: public QLabel
 {
 public:
-    CreditOutput();
+    CreditOutput(QGraphicsView *);
     CreditOutput(int, QGraphicsView *);
 
     void printLabel(int);

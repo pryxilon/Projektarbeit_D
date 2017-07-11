@@ -35,7 +35,11 @@ SOURCES += main.cpp \
     credit.cpp \
     music.cpp \
     creditoutput.cpp \
-    animation.cpp
+    animation.cpp \
+    winninglineoutput.cpp \
+    globals.cpp \
+    winninglinepart.cpp \
+    winninglines.cpp
 
 HEADERS  += \
     gameframe.h \
@@ -48,7 +52,11 @@ HEADERS  += \
     credit.h \
     music.h \
     creditoutput.h \
-    animation.h
+    animation.h \
+    winninglineoutput.h \
+    globals.h \
+    winninglinepart.h \
+    winninglines.h
 
 FORMS    +=
 

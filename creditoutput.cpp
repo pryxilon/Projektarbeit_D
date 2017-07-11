@@ -3,9 +3,20 @@
 #include <QGraphicsProxyWidget>
 #include <QLabel>
 
-CreditOutput::CreditOutput()
+CreditOutput::CreditOutput(QGraphicsView * view)
 {
     setView(view);
+    this->setFixedWidth(1280);
+    this->setFixedHeight(60);
+    this->setMargin(15);
+    this->setStyleSheet("border-style: solid;"
+                        "border-radius: 3px;"
+                        "border-width: 3px;"
+                        "border-color: #DDDD00;"
+                        "background-color: #EEEEEE;"
+                        "font: 40px Space Age;"
+                        "color: #DDDD00;"
+                        "qproperty-alignment: 'AlignCenter';");
 }
 
 CreditOutput::CreditOutput(int x, QGraphicsView * view)
@@ -19,10 +30,10 @@ CreditOutput::CreditOutput(int x, QGraphicsView * view)
     this->setStyleSheet("border-style: solid;"
                         "border-radius: 3px;"
                         "border-width: 3px;"
-                        "border-color: #888800;"
+                        "border-color: #DDDD00;"
                         "background-color: #222222;"
                         "font: 40px Space Age;"
-                        "color: #888800;"
+                        "color: #DDDD00;"
                         "qproperty-alignment: 'AlignCenter | AlignRight';");
 
     printLabel(x);
@@ -38,7 +49,7 @@ void CreditOutput::printLabel(int x)
     label->setFixedHeight(20);
     label->setStyleSheet("margin: 3px;"
                          "font: bold 15px Arial;"
-                         "color: #888800;"
+                         "color: #DDDD00;"
                          "background-color: transparent;"
                          "qproperty-alignment: 'AlignCenter';");
 }

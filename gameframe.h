@@ -8,6 +8,7 @@
 #include <QMediaPlayer>
 #include <QMovie>
 #include "slot.h"
+#include "winninglines.h"
 
 class GameFrame: public QGraphicsRectItem {
 public:
@@ -38,6 +39,8 @@ public:
     void setVideoIsRunning(bool value);
     QMediaPlayer *getVideoMusic() const;
     void setVideoMusic(QMediaPlayer *value);
+    WinningLines *getWinLines() const;
+    void setWinLines(WinningLines *value);
 
     void setSlots(Slot *, int);
     int setMaxSpinsFirstSlot();
@@ -46,12 +49,15 @@ public:
     void setFreeSpin(int);
 
     // public Variables
-    Slot * slot[5];
-    int line[5];
-    int winLineType[5];
+    Slot * slot[10];
+    int line[10];
+    int winLineType[10];
 
     qint64 getCurrentTimeVideo() const;
     void setCurrentTimeVideo(const qint64 &value);
+
+    bool getPlayerWin() const;
+    void setPlayerWin(bool value);
 
 private:
     QGraphicsView * view;
@@ -64,6 +70,9 @@ private:
     bool videoIsRunning = false;
     QMediaPlayer * videoMusic;
     Music * winSound;
+    bool playerWin;
+
+    WinningLines *WinLines;
 };
 
 #endif // GAMEFRAME_H

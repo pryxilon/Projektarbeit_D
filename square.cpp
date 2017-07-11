@@ -1,4 +1,6 @@
+#include "animation.h"
 #include "square.h"
+#include "globals.h"
 #include <QDebug>
 #include <QGraphicsPixmapItem>
 #include <QRectF>
@@ -17,7 +19,18 @@ Square::Square(QRectF rect, QGraphicsView * view, int i)
     setSqWidth(rect.width());
     setSqHeight(rect.height() / 3);
     setPos(rect.x(), rect.y() + getSqHeight() * i);
-    setPixmapOfStaticSquare(0);
+    setAnimationOfStaticSquare();
+}
+
+Square::Square(int x, int y, QGraphicsView * view, int i)
+{
+    //set Slot, View, ID,
+    setView(view);
+    setID1(i);
+    setSqWidth(squareWidth);
+    setSqHeight(squareHeight);
+    setPos(x, y);
+    setAnimationOfStaticSquare();
 }
 
 Square::Square(QRectF rect, QGraphicsView * view, int i, int type)
@@ -137,12 +150,17 @@ void Square::setPixmapOfSquare(int type)
     }
 }
 
-void Square::setPixmapOfStaticSquare(int i)
+void Square::setPixmapOfStaticSquare(int type)
 {
-    switch(i){
+    switch(type){
     case 0: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/empty240.png")); break;
-    case 1: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/WinGIF.gif")); break;
+    case 1: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/win240.png")); break;
     }
+}
+
+void Square::setAnimationOfStaticSquare()
+{
+    winAnimation = new Animation(getView(), this->x(), this->y());
 }
 
 int Square::getPosY()
@@ -168,3 +186,14 @@ void Square::moveSquare()
         setPos(x(),y() + getStepsize());
     }
 }
+
+Animation *Square::getWinAnimation() const
+{
+    return winAnimation;
+}
+
+void Square::setWinAnimation(Animation *value)
+{
+    winAnimation = value;
+}
+
