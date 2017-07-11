@@ -27,12 +27,16 @@ public:
     int getLastGain() const;
     void setLastGain(int value);
 
+    bool getPlayerWin() const;
+    void setPlayerWin(bool value);
+
 private:
     int credit = 0;
     GameFrame * gf;
     int bet = 100;
     int const maxBet = 200;
     int lastGain;
+    bool playerWin;
 };
 
 #endif // CREDIT_H

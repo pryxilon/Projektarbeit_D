@@ -3,11 +3,9 @@
 #include <QDebug>
 
 
-Borderpart::Borderpart(QRectF rect, int i)
+Borderpart::Borderpart()
 {
-    setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/FreeSpinHeaderEmpty1280x100.png"));
-    setPos(rect.x() + 320,rect.y() + 20);
-    setId(i);
+
 }
 
 Borderpart::Borderpart(QRectF rect, int i, int mainNumbers[6], bool isFrame)

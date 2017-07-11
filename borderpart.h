@@ -7,7 +7,7 @@
 
 class Borderpart: public QGraphicsPixmapItem {
 public:
-    Borderpart(QRectF, int);
+    Borderpart();
     Borderpart(QRectF, int, int[6], bool);
     int getId() const;
     void setId(int value);

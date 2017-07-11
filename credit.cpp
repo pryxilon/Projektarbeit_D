@@ -4,6 +4,7 @@ Credit::Credit(GameFrame * gf)
 {
     this->gf = gf;
     setLastGain(0);
+    setPlayerWin(false);
 }
 
 int Credit::getCredit() const
@@ -25,14 +26,20 @@ void Credit::GameOver()
 
 void Credit::addWonCredits()
 {
-    if((gf->line[0] != 0) || (gf->line[1] != 0) || (gf->line[2] != 0) || (gf->line[3] != 0) || (gf->line[4] != 0)) {
-        setLastGain(0);
+    setPlayerWin(false);
+    for(int i = 0; i < 10; i++) {
+        if(gf->getWinLines()->line[i] != 0) {
+            setPlayerWin(true);
+        }
+        if(getPlayerWin()) {
+            setLastGain(0);
+        }
     }
 
-    for(int i = 0; i < 5; i++) {
-        if(gf->line[i] != 0) {
-            setCredit(getCredit() + bet * getSymbolValue(gf->winLineType[i], gf->line[i]));
-            setLastGain(getLastGain() + bet * getSymbolValue(gf->winLineType[i], gf->line[i]));
+    for(int i = 0; i < 10; i++) {
+        if(gf->getWinLines()->line[i] != 0) {
+            setCredit(getCredit() + bet * getSymbolValue(gf->getWinLines()->winLineType[i], gf->getWinLines()->line[i]));
+            setLastGain(getLastGain() + bet * getSymbolValue(gf->getWinLines()->winLineType[i], gf->getWinLines()->line[i]));
         }
     }
 }
@@ -179,4 +186,14 @@ int Credit::getLastGain() const
 void Credit::setLastGain(int value)
 {
     lastGain = value;
+}
+
+bool Credit::getPlayerWin() const
+{
+    return playerWin;
+}
+
+void Credit::setPlayerWin(bool value)
+{
+    playerWin = value;
 }

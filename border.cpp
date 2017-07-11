@@ -30,20 +30,29 @@ Border::Border(QGraphicsView * view, int mainNumbers[6])
         view->scene()->addItem(gameBorders[i]);
     }
 
-    Borderpart * freeSpinHeader = new Borderpart(this->rect(), 9);
-    view->scene()->addItem(freeSpinHeader);
-
     setStartButton();
 }
 
 void Border::setStartButton()
 {
     startButton = new QPushButton("START");
-    startButton->setStyleSheet("QPushButton {background : red; border-style: none; font: bold 30px; color: #ffffff; padding: 6px; } "
-                               "QPushButton:hover {background: #ff5555} "
-                               "QPushButton:pressed {background: #aa0000}");
+    startButton->setFixedWidth(240);
+    startButton->setFixedHeight(80);
+    startButton->setStyleSheet(//"QPushButton {"
+                               "border-style: solid;"
+                               "border-radius: 3px;"
+                               "border-width: 3px;"
+                               "border-color: #FFFFFF;"
+                               "background-color: #00FF00;"
+                               "font: 40px Space Age;"
+                               "color: #FFFFFF;"
+                               //"qproperty-alignment: 'AlignCenter';"
+                               "margin 10px;"
+                               //"QPushButton:hover {background: #ff5555} "
+                               //"QPushButton:pressed {background: #aa0000}"
+                               );
     QGraphicsProxyWidget * proxy1 = getView()->scene()->addWidget(startButton);
-    proxy1->setPos(1700, 800);
+    proxy1->setPos(1650, 800);
 }
 
 void Border::setView(QGraphicsView * view)
