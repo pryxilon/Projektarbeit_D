@@ -11,7 +11,7 @@ public:
     // Constructors
     Slot();
     Slot(QGraphicsView *);
-    Slot(int, int, QRectF, QGraphicsView *, int, int[6]);
+    Slot(int, int, QRectF, QGraphicsView *, int);
 
     // getters and setters
     void setView(QGraphicsView *);

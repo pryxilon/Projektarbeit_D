@@ -38,8 +38,9 @@ SOURCES += main.cpp \
     animation.cpp \
     winninglineoutput.cpp \
     globals.cpp \
-    winninglinepart.cpp \
-    winninglines.cpp
+    winninglines.cpp \
+    winninglineconnecter.cpp \
+    winninglinerect.cpp
 
 HEADERS  += \
     gameframe.h \
@@ -55,8 +56,9 @@ HEADERS  += \
     animation.h \
     winninglineoutput.h \
     globals.h \
-    winninglinepart.h \
-    winninglines.h
+    winninglines.h \
+    winninglineconnecter.h \
+    winninglinerect.h
 
 FORMS    +=
 

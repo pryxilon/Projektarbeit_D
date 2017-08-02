@@ -1,4 +1,5 @@
 #include "animation.h"
+#include "globals.h"
 #include <QPixmap>
 #include <QGraphicsProxyWidget>
 #include <QGraphicsView>
@@ -10,17 +11,39 @@ Animation::Animation() {
 
 }
 
-Animation::Animation(QGraphicsView * view, int x, int y)               // Animation für Freispiele
+Animation::Animation(QGraphicsView *view, int width, int height) {     // Freispielvideo
+    label = new QLabel();
+    label->setMask((new QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Animation/Warphole.gif"))->mask());
+
+    animation = new QMovie("C:/Users/kaihs/Documents/Coding/Bilder/Animation/Warphole.gif");
+
+    videoMusic = new QMediaPlayer();
+    videoMusic->setMedia(QUrl("C:/Users/kaihs/Documents/Coding/Bilder/Sounds/Wurmloch.mp3"));
+
+    label->setMovie(animation);
+    label->setFixedWidth(width);
+    label->setFixedHeight(height);
+
+
+    proxyVid = view->scene()->addWidget(label);
+    proxyVid->setPos(sideMargin, topMargin);
+    label->setVisible(false);
+}
+
+Animation::Animation(QGraphicsView * view, int x, int y, int width, int height)               // Animation für Squares
 {
     label = new QLabel();
     label->setMask((new QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/WinGIF2.gif"))->mask());
 
     animation = new QMovie("C:/Users/kaihs/Documents/Coding/Bilder/WinGIF2.gif");
     label->setMovie(animation);
+    label->setFixedWidth(width);
+    label->setFixedHeight(height);
+
     proxyVid = view->scene()->addWidget(label);
     proxyVid->setPos(x, y);
     label->setVisible(false);
-    //proxyVid->setPos(mainNumbers[1] + slot * mainNumbers[2] + slot * mainNumbers[4], mainNumbers[0] + pos * mainNumbers[3]);
+    //proxyVid->setPos(sideMargin + slot * squareWidth + slot * separatorWidth, topMargin + pos * squareHeight);
 }
 
 QLabel *Animation::getLabel() const
@@ -36,33 +59,48 @@ void Animation::setLabel(QLabel *value)
 void Animation::playAnimation()
 {
     setAnimationIsRunning(true);
-    label->setFixedHeight(240);
-    label->setFixedWidth(240);
     animation->start();
 
     label->setVisible(true);
-    setCurrentTimeVideo(QDateTime::currentSecsSinceEpoch());
+    setStartTimeAnimation(QDateTime::currentSecsSinceEpoch());
 }
 
 void Animation::stopAnimation()
 {
     animation->stop();
-    setAnimationNonvisible();
-    setAnimationIsRunning(false);
-}
-
-void Animation::setAnimationNonvisible() {
     label->setVisible(false);
+    setAnimationIsRunning(false);
+    videoMusic->stop();
 }
 
-qint64 Animation::getCurrentTimeVideo() const
+QMediaPlayer *Animation::getVideoMusic() const
 {
-    return currentTimeVideo;
+    return videoMusic;
 }
 
-void Animation::setCurrentTimeVideo(const qint64 &value)
+void Animation::setVideoMusic(QMediaPlayer *value)
 {
-    currentTimeVideo = value;
+    videoMusic = value;
+}
+
+QMovie *Animation::getAnimation() const
+{
+    return animation;
+}
+
+void Animation::setAnimation(QMovie *value)
+{
+    animation = value;
+}
+
+qint64 Animation::getStartTimeAnimation() const
+{
+    return startTimeAnimation;
+}
+
+void Animation::setStartTimeAnimation(const qint64 &value)
+{
+    startTimeAnimation = value;
 }
 
 bool Animation::getAnimationIsRunning() const

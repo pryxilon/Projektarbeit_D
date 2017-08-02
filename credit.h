@@ -3,8 +3,6 @@
 
 #include "gameframe.h"
 
-
-
 class Credit
 {
 public:
@@ -32,7 +30,7 @@ public:
 
 private:
     int credit = 0;
-    GameFrame * gf;
+    GameFrame *gf;
     int bet = 100;
     int const maxBet = 200;
     int lastGain;

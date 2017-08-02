@@ -13,10 +13,10 @@
 class GameFrame: public QGraphicsRectItem {
 public:
     GameFrame();
-    GameFrame(QGraphicsView *, int[6]);
+    GameFrame(QGraphicsView *);
 
     // Funktionen
-    void initializeSlots(int[6]);
+    void initializeSlots();
     void gameFrameSlotCycle();
     void raiseFreeSpins();
     void highlightWinningLines();
@@ -49,7 +49,7 @@ public:
     void setFreeSpin(int);
 
     // public Variables
-    Slot * slot[10];
+    Slot * slot[5];
     int line[10];
     int winLineType[10];
 
@@ -58,6 +58,9 @@ public:
 
     bool getPlayerWin() const;
     void setPlayerWin(bool value);
+
+    Animation getFreeSpinVideo() const;
+    void setFreeSpinVideo(const Animation &value);
 
 private:
     QGraphicsView * view;
@@ -71,6 +74,7 @@ private:
     QMediaPlayer * videoMusic;
     Music * winSound;
     bool playerWin;
+    Animation freeSpinVideo;
 
     WinningLines *WinLines;
 };

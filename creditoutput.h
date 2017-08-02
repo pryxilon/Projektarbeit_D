@@ -1,6 +1,7 @@
 #ifndef CREDITOUTPUT_H
 #define CREDITOUTPUT_H
 
+#include <QGraphicsProxyWidget>
 #include <QGraphicsView>
 #include <QLabel>
 
@@ -18,6 +19,7 @@ public:
 
 private:
     QGraphicsView * view;
+    QGraphicsProxyWidget * proxy;
 };
 
 #endif // CREDITOUTPUT_H

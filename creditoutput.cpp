@@ -1,6 +1,5 @@
 #include "creditoutput.h"
 
-#include <QGraphicsProxyWidget>
 #include <QLabel>
 
 CreditOutput::CreditOutput(QGraphicsView * view)
@@ -22,7 +21,7 @@ CreditOutput::CreditOutput(QGraphicsView * view)
 CreditOutput::CreditOutput(int x, QGraphicsView * view)
 {
     setView(view);
-    QGraphicsProxyWidget * proxy = view->scene()->addWidget(this);
+    proxy = view->scene()->addWidget(this);
     proxy->setPos(x, 900);
     this->setFixedWidth(240);
     this->setFixedHeight(86);

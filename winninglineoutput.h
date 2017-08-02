@@ -2,7 +2,8 @@
 #define WINNINGLINEOUTPUT_H
 
 #include "slot.h"
-#include "winninglinepart.h"
+#include "winninglineconnecter.h"
+#include "winninglinerect.h"
 
 #include <QGraphicsRectItem>
 #include <QGraphicsView>
@@ -30,14 +31,11 @@ public:
     void setNameById();
 
     // public variables
-    WinningLinePart * parts[4];
+    WinningLineConnecter * parts[4];
 
     void initializeWinLine();
-    void outputHorizontalWinningLine(int length);
-    void outputDiagonalWinningLine(int length);
-    void outputBigWLine(int length);
-    void outputSmallWLine(int length);
-    void hideWinningLines();
+    void outputWinningLine(int type, int length);
+    void hideWinningLines(int);
 
 
 
@@ -48,11 +46,15 @@ public:
 
     void addPartsToScene();
 
+
+    WinningLineRect *getWinRect() const;
+    void setWinRect(WinningLineRect *value);
+
 private:
-    int mainNumbers[6];
     int ID;
     char *name;
     QGraphicsView * view;
+    WinningLineRect *winRect;
 };
 
 #endif // WINNINGLINEOUTPUT_H

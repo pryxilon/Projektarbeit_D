@@ -1,6 +1,7 @@
 #include "gameframe.h"
 #include "slot.h"
 #include "separator.h"
+#include "globals.h"
 #include <QGraphicsScene>
 #include <QGraphicsView>
 #include <QDebug>
@@ -11,36 +12,18 @@
 #include <QtMultimedia/QMediaPlayer>
 #include <QtMultimediaWidgets/QVideoWidget>
 
-GameFrame::GameFrame(QGraphicsView * view, int mainNumbers[6])
+GameFrame::GameFrame(QGraphicsView * view)
 {
-    setRect((view->width() - 5 * mainNumbers[2] - 4 * mainNumbers[4]) / 2, mainNumbers[0], 5 * mainNumbers[2] + 4 * mainNumbers[4], mainNumbers[2] * 3);
+    setRect((view->width() - 5 * squareWidth - 4 * separatorWidth) / 2, topMargin, 5 * squareWidth + 4 * separatorWidth, squareWidth * 3);
     setView(view);
-    setCurrentTimeVideo(QDateTime::currentSecsSinceEpoch());
     setPlayerWin(false);
 
-    initializeSlots(mainNumbers);
-    //setWinningLinesToZero();
-
-
+    initializeSlots();
 
     WinLines = new WinningLines(view);
 
-    warpHoleLabel = new QLabel();
-    warpHoleLabel->setMask((new QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Warphole.gif"))->mask());
-
-    movie = new QMovie("C:/Users/kaihs/Documents/Coding/Bilder/Warphole.gif");
-
-    videoMusic = new QMediaPlayer();
-    videoMusic->setMedia(QUrl("C:/Users/kaihs/Documents/Coding/Bilder/Wurmloch.mp3"));
-
     winSound = new Music();
-    winSound->getSound()->setMedia(QUrl("C:/Users/kaihs/Documents/Coding/Bilder/WinSound.mp3"));
-
-    warpHoleLabel->setMovie(movie);
-    proxyVid = view->scene()->addWidget(warpHoleLabel);
-    proxyVid->setPos(mainNumbers[1], mainNumbers[0]);
-
-    hideVideoFreeSpin();
+    winSound->getSound()->setMedia(QUrl("C:/Users/kaihs/Documents/Coding/Bilder/Sounds/WinSound.mp3"));
 }
 
 void GameFrame::setView(QGraphicsView * view)
@@ -51,46 +34,6 @@ void GameFrame::setView(QGraphicsView * view)
 QGraphicsView * GameFrame::getView()
 {
     return view;
-}
-
-QMovie *GameFrame::getMovie() const
-{
-    return movie;
-}
-
-void GameFrame::setMovie(QMovie *value)
-{
-    movie = value;
-}
-
-QLabel *GameFrame::getWarpHoleLabel() const
-{
-    return warpHoleLabel;
-}
-
-void GameFrame::setWarpHoleLabel(QLabel *value)
-{
-    warpHoleLabel = value;
-}
-
-bool GameFrame::getVideoIsRunning() const
-{
-    return videoIsRunning;
-}
-
-void GameFrame::setVideoIsRunning(bool value)
-{
-    videoIsRunning = value;
-}
-
-QMediaPlayer *GameFrame::getVideoMusic() const
-{
-    return videoMusic;
-}
-
-void GameFrame::setVideoMusic(QMediaPlayer *value)
-{
-    videoMusic = value;
 }
 
 int GameFrame::getFreeSpin() const
@@ -108,18 +51,18 @@ void GameFrame::setSlots(Slot * slot, int i)
     this->slot[i] = slot;
 }
 
-void GameFrame::initializeSlots(int mainNumbers[6])
+void GameFrame::initializeSlots()
 {
     Slot * newSlots[5];
     Separator * separators[4];
 
-    newSlots[0] = new Slot(this->rect().x(), this->rect().y(), this->rect(), view, 0, mainNumbers);
+    newSlots[0] = new Slot(this->rect().x(), this->rect().y(), this->rect(), view, 0);
     setSlots(newSlots[0], 0);
     view->scene()->addItem(newSlots[0]);
 
     for(int i = 0; i < 4; i++){
-        separators[i] = new Separator(newSlots[i]->rect().x() + newSlots[i]->rect().width(), this->rect().y(), mainNumbers);
-        newSlots[i+1] = new Slot(separators[i]->rect().x() + separators[i]->rect().width(), this->rect().y(), this->rect(), view, i, mainNumbers);
+        separators[i] = new Separator(newSlots[i]->rect().x() + newSlots[i]->rect().width(), this->rect().y());
+        newSlots[i+1] = new Slot(separators[i]->getPosX() + separators[i]->getWidth(), this->rect().y(), this->rect(), view, i);
         setSlots(newSlots[i+1], i+1);
         view->scene()->addItem(separators[i]);
         view->scene()->addItem(newSlots[i+1]);
@@ -217,50 +160,19 @@ void GameFrame::resetPlayAndSetGame()
 {
     WinLines->hideWinningLines();
     WinLines->setWinningLinesToZero();
+
     gameFrameSlotCycle();                     // soll einen kompletten durchlauf der Slots durchführen, wie in einer Spielrunde, soll normal in der "hauptschleife" wiederholt werden
     checkShowingSquares();                    // überprüfe die zu sehendes Felder und überprüfe ob gewonnen wurde
 
     setPlayerWin(false);
     for(int i = 0; i < WinLines->getWinLineCount() + 1; i++) {
-        qDebug() << WinLines->line[i];
         if(WinLines->line[i] != 0) {
             setPlayerWin(true);
         }
-        qDebug() << getPlayerWin();
         if(getPlayerWin()) {
             winSound->getSound()->play();
         }
     }
-}
-
-void GameFrame::playVideoFreeSpin()
-{
-    setVideoIsRunning(true);
-    warpHoleLabel->setFixedHeight(720);
-    warpHoleLabel->setFixedWidth(1280);
-    movie->start();
-    videoMusic->play();
-
-    warpHoleLabel->setVisible(true);
-    setCurrentTimeVideo(QDateTime::currentSecsSinceEpoch());
-}
-
-void GameFrame::hideVideoFreeSpin()
-{
-    movie->stop();
-    warpHoleLabel->setVisible(false);
-    setVideoIsRunning(false);
-    videoMusic->stop();
-}
-
-qint64 GameFrame::getCurrentTimeVideo() const
-{
-    return currentTimeVideo;
-}
-
-void GameFrame::setCurrentTimeVideo(const qint64 &value)
-{
-    currentTimeVideo = value;
 }
 
 bool GameFrame::getPlayerWin() const
@@ -273,6 +185,16 @@ void GameFrame::setPlayerWin(bool value)
     playerWin = value;
 }
 
+Animation GameFrame::getFreeSpinVideo() const
+{
+    return freeSpinVideo;
+}
+
+void GameFrame::setFreeSpinVideo(const Animation &value)
+{
+    freeSpinVideo = value;
+}
+
 WinningLines *GameFrame::getWinLines() const
 {
     return WinLines;
@@ -281,13 +203,6 @@ WinningLines *GameFrame::getWinLines() const
 void GameFrame::setWinLines(WinningLines *value)
 {
     WinLines = value;
-}
-
-void GameFrame::setWinningLinesToZero()
-{
-    for(int i = 0; i < 9; i++) {
-        line[i] = 0;
-    }
 }
 
 void GameFrame::raiseFreeSpins()

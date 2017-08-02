@@ -8,6 +8,7 @@ WinningLineOutput::WinningLineOutput(int ID, QGraphicsView *view)
     setNameById();
     setView(view);
     initializeWinLine();
+    winRect = new WinningLineRect(ID, view);
 }
 
 int WinningLineOutput::getID() const
@@ -47,7 +48,7 @@ void WinningLineOutput::initializeWinLine() {
 
 void WinningLineOutput::outputHorizontalWinline() {
     for(int i = 0; i < 4; i++) {
-        parts[i] = new WinningLinePart(i * 3 + ID, 0);
+        parts[i] = new WinningLineConnecter(i * 3 + ID, 0, ID);
         view->scene()->addItem(parts[i]);
     }
 
@@ -59,10 +60,10 @@ void WinningLineOutput::outputHorizontalWinline() {
 }
 
 void WinningLineOutput::outputDiagonalWinline131() {
-    parts[0] = new WinningLinePart(0, 1);
-    parts[1] = new WinningLinePart(3, 1);
-    parts[2] = new WinningLinePart(5, 2);
-    parts[3] = new WinningLinePart(6, 2);
+    parts[0] = new WinningLineConnecter(0, 1, ID);
+    parts[1] = new WinningLineConnecter(3, 1, ID);
+    parts[2] = new WinningLineConnecter(5, 2, ID);
+    parts[3] = new WinningLineConnecter(6, 2, ID);
 
     staticSquares[0] = new Square(sideMargin + 0 * squareWidth + 0 * separatorWidth, topMargin + 0 * squareHeight, view, 0);
     staticSquares[1] = new Square(sideMargin + 1 * squareWidth + 1 * separatorWidth, topMargin + 1 * squareHeight, view, 1);
@@ -70,15 +71,14 @@ void WinningLineOutput::outputDiagonalWinline131() {
     staticSquares[3] = new Square(sideMargin + 3 * squareWidth + 3 * separatorWidth, topMargin + 1 * squareHeight, view, 3);
     staticSquares[4] = new Square(sideMargin + 4 * squareWidth + 4 * separatorWidth, topMargin + 0 * squareHeight, view, 4);
 
-
     addPartsToScene();
 }
 
 void WinningLineOutput::outputDiagonalWinline313() {
-    parts[0] = new WinningLinePart(1, 2);
-    parts[1] = new WinningLinePart(2, 2);
-    parts[2] = new WinningLinePart(4, 1);
-    parts[3] = new WinningLinePart(7, 1);
+    parts[0] = new WinningLineConnecter(1, 2, ID);
+    parts[1] = new WinningLineConnecter(2, 2, ID);
+    parts[2] = new WinningLineConnecter(4, 1, ID);
+    parts[3] = new WinningLineConnecter(7, 1, ID);
 
     staticSquares[0] = new Square(sideMargin + 0 * squareWidth + 0 * separatorWidth, topMargin + 2 * squareHeight, view, 0);
     staticSquares[1] = new Square(sideMargin + 1 * squareWidth + 1 * separatorWidth, topMargin + 1 * squareHeight, view, 1);
@@ -90,61 +90,57 @@ void WinningLineOutput::outputDiagonalWinline313() {
 }
 
 void WinningLineOutput::outputBigWUpper() {
-    parts[0] = new WinningLinePart(0, 4);
-    parts[1] = new WinningLinePart(1, 3);
-    parts[2] = new WinningLinePart(2, 4);
-    parts[3] = new WinningLinePart(3, 3);
+    for(int i = 0; i < 4; i++) {
+        parts[i] = new WinningLineConnecter(i, (i % 2 == 0 ? 4 : 3), ID);
+    }
+    parts[0] = new WinningLineConnecter(0, 4, ID);
+    parts[1] = new WinningLineConnecter(1, 3, ID);
+    parts[2] = new WinningLineConnecter(2, 4, ID);
+    parts[3] = new WinningLineConnecter(3, 3, ID);
 
-    staticSquares[0] = new Square(sideMargin + 0 * squareWidth + 0 * separatorWidth, topMargin + 0 * squareHeight, view, 0);
-    staticSquares[1] = new Square(sideMargin + 1 * squareWidth + 1 * separatorWidth, topMargin + 2 * squareHeight, view, 1);
-    staticSquares[2] = new Square(sideMargin + 2 * squareWidth + 2 * separatorWidth, topMargin + 0 * squareHeight, view, 2);
-    staticSquares[3] = new Square(sideMargin + 3 * squareWidth + 3 * separatorWidth, topMargin + 2 * squareHeight, view, 3);
-    staticSquares[4] = new Square(sideMargin + 4 * squareWidth + 4 * separatorWidth, topMargin + 0 * squareHeight, view, 4);
+    for(int i = 0; i < 5; i++) {
+        staticSquares[i] = new Square(sideMargin + i * squareWidth + i * separatorWidth, topMargin + (i % 2 == 0 ? 0 : 2) * squareHeight, view, i);
+    }
 
     addPartsToScene();
 }
 
 void WinningLineOutput::outputBigWLower() {
-    parts[0] = new WinningLinePart(0, 3);
-    parts[1] = new WinningLinePart(1, 4);
-    parts[2] = new WinningLinePart(2, 3);
-    parts[3] = new WinningLinePart(3, 4);
+    for(int i = 0; i < 4; i++) {
+        parts[i] = new WinningLineConnecter(i, (i % 2 == 0 ? 3 : 4), ID);
+    }
 
-    staticSquares[0] = new Square(sideMargin + 0 * squareWidth + 0 * separatorWidth, topMargin + 2 * squareHeight, view, 0);
-    staticSquares[1] = new Square(sideMargin + 1 * squareWidth + 1 * separatorWidth, topMargin + 0 * squareHeight, view, 1);
-    staticSquares[2] = new Square(sideMargin + 2 * squareWidth + 2 * separatorWidth, topMargin + 2 * squareHeight, view, 2);
-    staticSquares[3] = new Square(sideMargin + 3 * squareWidth + 3 * separatorWidth, topMargin + 0 * squareHeight, view, 3);
-    staticSquares[4] = new Square(sideMargin + 4 * squareWidth + 4 * separatorWidth, topMargin + 2 * squareHeight, view, 4);
+    for(int i = 0; i < 5; i++) {
+        staticSquares[i] = new Square(sideMargin + i * squareWidth + i * separatorWidth, topMargin + (i % 2 == 0 ? 2 : 0) * squareHeight, view, i);
+    }
 
     addPartsToScene();
 }
 
 void WinningLineOutput::outputSmallWUpper() {
-    parts[0] = new WinningLinePart(0, 1);
-    parts[1] = new WinningLinePart(2, 2);
-    parts[2] = new WinningLinePart(4, 1);
-    parts[3] = new WinningLinePart(6, 2);
+    for(int i = 0; i < 4; i++) {
+        parts[i] = new WinningLineConnecter(i * 2, (i % 2 == 0 ? 1 : 2), ID);
+    }
 
-    staticSquares[0] = new Square(sideMargin + 0 * squareWidth + 0 * separatorWidth, topMargin + 0 * squareHeight, view, 0);
-    staticSquares[1] = new Square(sideMargin + 1 * squareWidth + 1 * separatorWidth, topMargin + 1 * squareHeight, view, 1);
-    staticSquares[2] = new Square(sideMargin + 2 * squareWidth + 2 * separatorWidth, topMargin + 0 * squareHeight, view, 2);
-    staticSquares[3] = new Square(sideMargin + 3 * squareWidth + 3 * separatorWidth, topMargin + 1 * squareHeight, view, 3);
-    staticSquares[4] = new Square(sideMargin + 4 * squareWidth + 4 * separatorWidth, topMargin + 0 * squareHeight, view, 4);
+    for(int i = 0; i < 5; i++) {
+        staticSquares[i] = new Square(sideMargin + i * squareWidth + i * separatorWidth, topMargin + (i % 2 == 0 ? 0 : 1) * squareHeight, view, i);
+    }
 
     addPartsToScene();
 }
 
 void WinningLineOutput::outputSmallWLower() {
-    parts[0] = new WinningLinePart(1, 2);
-    parts[1] = new WinningLinePart(3, 1);
-    parts[2] = new WinningLinePart(5, 2);
-    parts[3] = new WinningLinePart(7, 1);
+    for(int i = 0; i < 4; i++) {
+        parts[i] = new WinningLineConnecter(i * 2 + 1, (i % 2 == 0 ? 2 : 1), ID);
+    }
+    parts[0] = new WinningLineConnecter(1, 2, ID);
+    parts[1] = new WinningLineConnecter(3, 1, ID);
+    parts[2] = new WinningLineConnecter(5, 2, ID);
+    parts[3] = new WinningLineConnecter(7, 1, ID);
 
-    staticSquares[0] = new Square(sideMargin + 0 * squareWidth + 0 * separatorWidth, topMargin + 2 * squareHeight, view, 0);
-    staticSquares[1] = new Square(sideMargin + 1 * squareWidth + 1 * separatorWidth, topMargin + 1 * squareHeight, view, 1);
-    staticSquares[2] = new Square(sideMargin + 2 * squareWidth + 2 * separatorWidth, topMargin + 2 * squareHeight, view, 2);
-    staticSquares[3] = new Square(sideMargin + 3 * squareWidth + 3 * separatorWidth, topMargin + 1 * squareHeight, view, 3);
-    staticSquares[4] = new Square(sideMargin + 4 * squareWidth + 4 * separatorWidth, topMargin + 2 * squareHeight, view, 4);
+    for(int i = 0; i < 5; i++) {
+        staticSquares[i] = new Square(sideMargin + i * squareWidth + i * separatorWidth, topMargin + (i % 2 == 0 ? 2 : 1) * squareHeight, view, i);
+    }
 
     addPartsToScene();
 }
@@ -156,6 +152,16 @@ void WinningLineOutput::addPartsToScene() {
     for(int i = 0; i < 4; i++) {
         view->scene()->addItem(parts[i]);
     }
+}
+
+WinningLineRect *WinningLineOutput::getWinRect() const
+{
+    return winRect;
+}
+
+void WinningLineOutput::setWinRect(WinningLineRect *value)
+{
+    winRect = value;
 }
 
 void WinningLineOutput::setNameById() {
@@ -173,114 +179,40 @@ void WinningLineOutput::setNameById() {
     }*/
 }
 
-void WinningLineOutput::outputHorizontalWinningLine(int length) {
+void WinningLineOutput::outputWinningLine(int type, int length) {
     if(length != 0){
-        staticSquares[0]->setPixmapOfStaticSquare(1);
-        parts[0]->setupPixmap();
-        staticSquares[1]->setPixmapOfStaticSquare(1);
+        staticSquares[0]->setPixmapOfStaticSquare(ID);
+        winRect->displayRect(type, length);
+        parts[0]->setVisible(true);
+        staticSquares[1]->setPixmapOfStaticSquare(ID);
         if(length == 3){
-            parts[1]->setupPixmap();
-            staticSquares[2]->setPixmapOfStaticSquare(1);
+            parts[1]->setVisible(true);
+            staticSquares[2]->setPixmapOfStaticSquare(ID);
         }
         if(length == 4) {
             for(int i = 1; i < 4; i++) {
-                parts[i]->setupPixmap();
-                staticSquares[i]->setPixmapOfStaticSquare(1);
+                parts[i]->setVisible(true);
+                staticSquares[i+1]->setPixmapOfStaticSquare(ID);
             }
         }
         if(length == 5) {
             for(int i = 1; i < 5; i++) {
-                parts[i]->setupPixmap();
-                staticSquares[i]->setPixmapOfStaticSquare(1);
+                parts[i]->setVisible(true);
+                staticSquares[i+1]->setPixmapOfStaticSquare(ID);
             }
         }
     }
 }
 
-void WinningLineOutput::outputDiagonalWinningLine(int length) {
-    if(length != 0){
-        staticSquares[0]->setPixmapOfStaticSquare(1);
-        parts[0]->setupPixmap();
-        staticSquares[1]->setPixmapOfStaticSquare(1);
-        if(length == 3){
-            parts[1]->setupPixmap();
-            staticSquares[1]->setPixmapOfStaticSquare(1);
-        }
-        if(length == 4) {
-            parts[1]->setupPixmap();
-            staticSquares[2]->setPixmapOfStaticSquare(1);
-            parts[2]->setupPixmap();
-            staticSquares[3]->setPixmapOfStaticSquare(1);
-        }
-        if(length == 5) {
-            parts[1]->setupPixmap();
-            staticSquares[2]->setPixmapOfStaticSquare(1);
-            parts[2]->setupPixmap();
-            staticSquares[3]->setPixmapOfStaticSquare(1);
-            parts[3]->setupPixmap();
-            staticSquares[4]->setPixmapOfStaticSquare(1);
-        }
-    }
-}
-
-void WinningLineOutput::outputBigWLine(int length) {
-    if(length != 0){
-        staticSquares[0]->setPixmapOfStaticSquare(1);
-        parts[0]->setupPixmap();
-        staticSquares[1]->setPixmapOfStaticSquare(1);
-        if(length == 3){
-            parts[1]->setupPixmap();
-            staticSquares[2]->setPixmapOfStaticSquare(1);
-        }
-        if(length == 4) {
-            parts[1]->setupPixmap();
-            staticSquares[2]->setPixmapOfStaticSquare(1);
-            parts[2]->setupPixmap();
-            staticSquares[3]->setPixmapOfStaticSquare(1);
-        }
-        if(length == 5) {
-            parts[1]->setupPixmap();
-            staticSquares[2]->setPixmapOfStaticSquare(1);
-            parts[2]->setupPixmap();
-            staticSquares[3]->setPixmapOfStaticSquare(1);
-            parts[3]->setupPixmap();
-            staticSquares[4]->setPixmapOfStaticSquare(1);
-        }
-    }
-}
-
-void WinningLineOutput::outputSmallWLine(int length) {
-    if(length != 0){
-        staticSquares[0]->setPixmapOfStaticSquare(1);
-        parts[0]->setupPixmap();
-        staticSquares[1]->setPixmapOfStaticSquare(1);
-        if(length == 3){
-            parts[1]->setupPixmap();
-            staticSquares[2]->setPixmapOfStaticSquare(1);
-        }
-        if(length == 4) {
-            parts[1]->setupPixmap();
-            staticSquares[2]->setPixmapOfStaticSquare(1);
-            parts[2]->setupPixmap();
-            staticSquares[3]->setPixmapOfStaticSquare(1);
-        }
-        if(length == 5) {
-            parts[1]->setupPixmap();
-            staticSquares[2]->setPixmapOfStaticSquare(1);
-            parts[2]->setupPixmap();
-            staticSquares[3]->setPixmapOfStaticSquare(1);
-            parts[3]->setupPixmap();
-            staticSquares[4]->setPixmapOfStaticSquare(1);
-        }
-    }
-}
-
-void WinningLineOutput::hideWinningLines() {
+void WinningLineOutput::hideWinningLines(int win) {
     for(int j = 0; j < 4; j++) {
-        parts[j]->hidePixmap();
+        parts[j]->setVisible(false);;
     }
     for(int j = 0; j < 5; j++) {
-        staticSquares[j]->setPixmapOfStaticSquare(0);
+        staticSquares[j]->hidePixmapOfStaticSquare();
+    }
+    if(win != 0) {
+        winRect->hideRect();
     }
 }
 

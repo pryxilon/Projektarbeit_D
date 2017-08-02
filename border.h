@@ -8,7 +8,7 @@
 class Border: public QGraphicsRectItem {
 public:
     Border();
-    Border(QGraphicsView *, int[6]);
+    Border(QGraphicsView *);
 
     void setStartButton();
 

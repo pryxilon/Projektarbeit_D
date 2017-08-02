@@ -137,25 +137,49 @@ void Square::setType(int type)
 void Square::setPixmapOfSquare(int type)
 {
     switch(type){
-    case 0: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Erde.png")); break;
-    case 1: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Mond.png")); break;
-    case 2: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Shuttle.png")); break;
-    case 3: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Astronaut.png")); break;
-    case 4: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Wurmloch.png")); break;
-    case 5: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Ten.png")); break;
-    case 6: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Jack.png")); break;
-    case 7: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Queen.png")); break;
-    case 8: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/King.png")); break;
-    case 9: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Ace.png")); break;
+    case 0: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Squares/Erde.png")); break;
+    case 1: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Squares/Mond.png")); break;
+    case 2: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Squares/Shuttle.png")); break;
+    case 3: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Squares/Astronaut.png")); break;
+    case 4: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Squares/Wurmloch.png")); break;
+    case 5: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Squares/Ten.png")); break;
+    case 6: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Squares/Jack.png")); break;
+    case 7: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Squares/Queen.png")); break;
+    case 8: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Squares/King.png")); break;
+    case 9: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Squares/Ace.png")); break;
     }
 }
 
-void Square::setPixmapOfStaticSquare(int type)
+void Square::setPixmapOfStaticSquare(int linetype)
 {
-    switch(type){
-    case 0: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/empty240.png")); break;
-    case 1: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/win240.png")); break;
+    switch(linetype){
+    case 0: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/red.png")); break;
+    case 1: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/green.png")); break;
+    case 2: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/blue.png")); break;
+    case 3: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/magenta.png")); break;
+    case 4: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/cyan.png")); break;
+    case 5: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/violet.png")); break;
+    case 6: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/babyblue.png")); break;
+    case 7: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/yellow.png")); break;
+    case 8: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/orange.png")); break;
+    case 9: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/gray.png")); break;
+    default: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/white.png")); break;
     }
+}
+
+void Square::hidePixmapOfStaticSquare()
+{
+    setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/empty.png"));
+}
+
+int Square::getParentalID() const
+{
+    return parentalID;
+}
+
+void Square::setParentalID(int value)
+{
+    parentalID = value;
 }
 
 void Square::setAnimationOfStaticSquare()

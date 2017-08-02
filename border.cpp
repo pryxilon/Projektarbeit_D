@@ -11,7 +11,7 @@ Border::Border()
 
 }
 
-Border::Border(QGraphicsView * view, int mainNumbers[6])
+Border::Border(QGraphicsView * view)
 {
     setRect(view->rect().x(), view->rect().y(), view->rect().width(), view->rect().height());
     setView(view);
@@ -19,15 +19,8 @@ Border::Border(QGraphicsView * view, int mainNumbers[6])
     Borderpart * bps[4];
 
     for(int i = 0; i < 4; i++) {
-        bps[i] = new Borderpart(this->rect(), i, mainNumbers, false);
+        bps[i] = new Borderpart(i, false);
         view->scene()->addItem(bps[i]);
-    }
-
-    Borderpart * gameBorders[4];
-
-    for(int i = 0; i < 4; i++) {
-        gameBorders[i] = new Borderpart(this->rect(), i, mainNumbers, true);
-        view->scene()->addItem(gameBorders[i]);
     }
 
     setStartButton();
