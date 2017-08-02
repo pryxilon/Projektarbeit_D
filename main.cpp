@@ -29,19 +29,14 @@ int main(int argc, char *argv[])
     view->setFixedSize(1920, 1080);
     view->setSceneRect(0, 0, 1920, 1080);
 
-    int mainNumbers[6];
-    mainNumbers[0] = topMargin;
-    mainNumbers[1] = sideMargin;
-    mainNumbers[2] = squareWidth;
-    mainNumbers[3] = squareHeight;
-    mainNumbers[4] = separatorWidth;
-    mainNumbers[5] = frameBorderWidth;
+    QTime time = QTime::currentTime();
+    qsrand((uint)time.msec());
 
     QEventLoop el;
     Background * bg = new Background();
     scene->addItem(bg);
 
-    GameFrame * gf = new GameFrame(view, mainNumbers);
+    GameFrame * gf = new GameFrame(view);
     scene->addItem(gf);
 
     Slot * slot[5];
@@ -49,15 +44,24 @@ int main(int argc, char *argv[])
         slot[i] = gf->slot[i];
     }
 
-    Border * bf = new Border(view, mainNumbers);
-    scene->addItem(bf);
-
     for(int i = 0; i < 5; i++) {
         gf->slot[i]->initSlot();                  // Slots werden initialisiert -> schon erzeugte Quadrate werden in Position gebracht
     }
 
+    Animation *freeSpinVideo = new Animation(view, 1280, 720);
+
     Credit * credits = new Credit(gf);
     credits->setCredit(5000);
+
+    Border * bf = new Border(view);
+    scene->addItem(bf);
+
+    Borderpart * gameBorders[4];
+
+    for(int i = 0; i < 4; i++) {
+        gameBorders[i] = new Borderpart(i, true);
+        scene->addItem(gameBorders[i]);
+    }
 
     CreditOutput * betHeightLabel = new CreditOutput(320, view);
     CreditOutput * lastWinLabel = new CreditOutput(1100, view);
@@ -73,10 +77,9 @@ int main(int argc, char *argv[])
         betHeightLabel->setText(QString::number(credits->getBet()));
         lastWinLabel->setText(QString::number(credits->getLastGain()));
 
-        if((bf->startButton->isDown() && gf->getVideoIsRunning() == false && gf->slot[0]->staticSquares[0])) {
+        if((bf->startButton->isDown() && freeSpinVideo->getAnimationIsRunning() == false && gf->slot[0]->staticSquares[0])) {
             credits->betting();
             creditLabel->setText(QString::number(credits->getCredit()));
-
             gf->resetPlayAndSetGame();
 
             credits->addWonCredits();
@@ -85,12 +88,12 @@ int main(int argc, char *argv[])
 
         if(gf->getFreeSpin() != 0) {
 
-            if(gf->getVideoIsRunning() == false) {
-                gf->playVideoFreeSpin();
+            if(freeSpinVideo->getAnimationIsRunning() == false) {
+                freeSpinVideo->playAnimation();
             }
 
-            if((gf->getVideoIsRunning() == true) && ((gf->getCurrentTimeVideo() + 4) - QDateTime::currentSecsSinceEpoch() < 0)) {
-                gf->hideVideoFreeSpin();
+            if((freeSpinVideo->getAnimationIsRunning() == true) && ((freeSpinVideo->getStartTimeAnimation() + 4) - QDateTime::currentSecsSinceEpoch() < 0)) {
+                freeSpinVideo->stopAnimation();
 
                 proxy = scene->addWidget(freeSpinLabel);
                 proxy->setPos(320, 50);

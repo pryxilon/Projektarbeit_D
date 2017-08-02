@@ -92,7 +92,7 @@ void WinningLines::checkHorizontalWinLine(Square *shownSquares[5][3], int i) {
     checkWinningLines(type0, type1, type2, type3, type4, i);
 
     if(line[i] != 0) {
-        WinLine[i]->outputHorizontalWinningLine(line[i]);
+        WinLine[i]->outputWinningLine(winLineType[i], line[i]);
     }
 }
 
@@ -106,7 +106,7 @@ void WinningLines::checkDiagonalWinLine(Square *shownSquares[5][3], int i) {
     checkWinningLines(type0, type1, type2, type3, type4, (i == 3 ? 3 : 4));
 
     if(line[i] != 0) {
-        WinLine[i]->outputDiagonalWinningLine(line[i]);
+        WinLine[i]->outputWinningLine(winLineType[i], line[i]);
     }
 }
 
@@ -120,7 +120,7 @@ void WinningLines::checkBigWWinLine(Square *shownSquares[5][3], int i) {
     checkWinningLines(type0, type1, type2, type3, type4, (i == 5 ? 5 : 6));
 
     if(line[i] != 0) {
-        WinLine[i]->outputBigWLine(line[i]);
+        WinLine[i]->outputWinningLine(winLineType[i], line[i]);
     }
 }
 
@@ -134,7 +134,7 @@ void WinningLines::checkSmallWWinLine(Square *shownSquares[5][3], int i) {
     checkWinningLines(type0, type1, type2, type3, type4, (i == 7 ? 7 : 8));
 
     if(line[i] != 0) {
-        WinLine[i]->outputSmallWLine(line[i]);
+        WinLine[i]->outputWinningLine(winLineType[i], line[i]);
     }
 }
 
@@ -157,7 +157,7 @@ void WinningLines::checkWinningLines(int type0, int type1, int type2, int type3,
                 }
             }
         }
-        if(type1 == type2 || (type2 == 4)){
+        if(type1 == type2 || (type2 == 4) || (type0 == type2 && type1 == 4)){
             line[winLineNumber] = 3;
             if(type0 == type3 || (type3 == 4)) {
                 if(type0 == type4 || (type4 == 4)) {
@@ -188,7 +188,7 @@ void WinningLines::outputFreeSpinSquares(Square *shownSquares[5][3]) {
     for(int j = 0; j < 5; j++) {
         for(int i = 0; i < 3; i++) {
             if(shownSquares[j][i]->getType() == 4) {
-                WinLine[i]->staticSquares[j]->setPixmapOfStaticSquare(1);
+                WinLine[i]->staticSquares[j]->setPixmapOfStaticSquare(9);
             }
         }
     }
@@ -206,7 +206,7 @@ void WinningLines::setView(QGraphicsView *value)
 
 void WinningLines::hideWinningLines() {
     for(int i = 0; i < 9; i++) {
-        WinLine[i]->hideWinningLines();
+        WinLine[i]->hideWinningLines(line[i]);
     }
 }
 

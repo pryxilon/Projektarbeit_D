@@ -3,7 +3,7 @@
 Music::Music()
 {
     sound = new QMediaPlayer();
-    //sound->setMedia(QUrl("C:/Users/kaihs/Documents/Coding/Bilder/click1.mp3"));
+    //sound->setMedia(QUrl("C:/Users/kaihs/Documents/Coding/Bilder/Sounds/click1.mp3"));
 }
 
 QMediaPlayer *Music::getSound() const

@@ -15,28 +15,36 @@ public:
     Square(QRectF, QGraphicsView *, int);
     Square(int, int, QGraphicsView *, int);
     Square(QRectF, QGraphicsView *, int, int);
+
     void setSlotRect(QRectF);
     QRectF getSlotRect();
     void setView(QGraphicsView *);
     QGraphicsView * getView();
 
     // setter und getter
+    int  getParentalID() const;
+    void setParentalID(int value);
     void setID1(int);
-    int getID1();
+    int  getID1();
     void setPositionToDefault();
-    int getType();
+    int  getType();
     void setType(int);
-    int getStepsize() const;
+    int  getStepsize() const;
     void setStepsize(int value);
+    int  getPosY();
+    Animation *getWinAnimation() const;
+    void setWinAnimation(Animation *value);
+
     void setPixmapOfSquare(int);
+    void setPixmapOfStaticSquare(int type);
     void setAnimationOfStaticSquare();
-    int getPosY();
+    void hidePixmapOfStaticSquare();
 
     // Y-Axis
     void setDefY(int);
-    int getDefY();
+    int  getDefY();
     void setMovingY(int);
-    int getMovingY();
+    int  getMovingY();
 
     // Square dimensions
     void setSqHeight(int);
@@ -47,14 +55,9 @@ public:
     // Hauptfunktion Square
     void moveSquare();
 
-    Animation *getWinAnimation() const;
-    void setWinAnimation(Animation *value);
-
-    void setPixmapOfStaticSquare(int type);
-
-
 private:
     QRectF rect;
+    int parentalID;
     QGraphicsView * view;
     int id1;
     int defY;

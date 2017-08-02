@@ -1,4 +1,5 @@
 #include "borderpart.h"
+#include "globals.h"
 #include <QBrush>
 #include <QDebug>
 
@@ -8,46 +9,46 @@ Borderpart::Borderpart()
 
 }
 
-Borderpart::Borderpart(QRectF rect, int i, int mainNumbers[6], bool isFrame)
+Borderpart::Borderpart(int i, bool isFrame)
 {
     setId(i);
     setIsFrame(isFrame);
     if(!isFrame) {
         switch(i) {
         case 0:
-            setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Header140.png"));
-            setPos(rect.x(), rect.y());
+            setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Backgroundimage/Header.png"));
+            setPos(0, 0);
             break;
         case 1:
-            setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Left.png"));
-            setPos(rect.x(), rect.y() + mainNumbers[0]);
+            setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Backgroundimage/Left.png"));
+            setPos(0, topMargin);
             break;
         case 2:
-            setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Right.png"));
-            setPos(rect.x() + mainNumbers[1] + mainNumbers[2] * 5 + mainNumbers[4] * 4, rect.y() + mainNumbers[0]);
+            setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Backgroundimage/Right.png"));
+            setPos(sideMargin + squareWidth * 5 + separatorWidth * 4, topMargin);
             break;
         case 3:
-            setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Bottom220.png"));
-            setPos(rect.x(), mainNumbers[0] + mainNumbers[2] * 3);
+            setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Backgroundimage/Bottom.png"));
+            setPos(0, topMargin + squareHeight * 3);
             break;
         }
     } else {
         switch(i) {
         case 0:
-            setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/border-obenunten.png"));
-            setPos(mainNumbers[1] - mainNumbers[5], mainNumbers[0] - mainNumbers[5]);
+            setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Border/upper2.png"));
+            setPos(sideMargin - frameBorderWidth, topMargin - frameBorderWidth);
             break;
         case 1:
-            setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/border-linksrechts.png"));
-            setPos(mainNumbers[1] - mainNumbers[5], rect.y() + mainNumbers[0]);
+            setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Border/sides.png"));
+            setPos(sideMargin - frameBorderWidth, topMargin);
             break;
         case 2:
-            setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/border-linksrechts.png"));
-            setPos(mainNumbers[1] + mainNumbers[2] * 5 + mainNumbers[4] * 4, rect.y() + mainNumbers[0]);
+            setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Border/rightside.png"));
+            setPos(sideMargin + squareWidth * 5 + separatorWidth * 4, topMargin);
             break;
         case 3:
-            setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/border-obenunten.png"));
-            setPos(mainNumbers[1] - mainNumbers[5], mainNumbers[0] + mainNumbers[2] * 3);
+            setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Border/lower2.png"));
+            setPos(sideMargin - frameBorderWidth, topMargin + squareWidth * 3);
             break;
         }
     }

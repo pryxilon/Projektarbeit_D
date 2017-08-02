@@ -1,20 +1,18 @@
-#ifndef WINNINGLINEPART_H
-#define WINNINGLINEPART_H
+#ifndef WINNINGLINECONNECTER_H
+#define WINNINGLINECONNECTER_H
 
 #include <QGraphicsPixmapItem>
 
 
 
 
-class WinningLinePart: public QGraphicsPixmapItem
+class WinningLineConnecter: public QGraphicsPixmapItem
 {
 public:
-    WinningLinePart();
-    WinningLinePart(int ID, int type);
+    WinningLineConnecter();
+    WinningLineConnecter(int ID, int type, int parentalId);
 
     void initialize(int, int);
-    void setupPixmap(int);
-    void hidePixmap();
     void setPosition(int type);
     void setPositionEven(int ID);
     void setPositionDiagonal(int ID);
@@ -29,10 +27,14 @@ public:
 
 
     void setupPixmap();
+    int getParentalId() const;
+    void setParentalId(int value);
+
 private:
     int height;
     int ID;
     int type;
+    int parentalId;
 };
 
-#endif // WINNINGLINEPART_H
+#endif // WINNINGLINECONNECTER_H

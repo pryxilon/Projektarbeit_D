@@ -1,6 +1,7 @@
 #include "music.h"
 #include "slot.h"
 #include "square.h"
+#include "globals.h"
 #include <QGraphicsView>
 #include <QDebug>
 #include <QEventLoop>
@@ -14,16 +15,16 @@ Slot::Slot(QGraphicsView * view)
     setID(6);
 }
 
-Slot::Slot(int x, int y, QRectF frameRect, QGraphicsView * view, int id, int mainNumbers[6])
+Slot::Slot(int x, int y, QRectF frameRect, QGraphicsView * view, int id)
 {
     // Setter
     setView(view);
     setID(id);
-    setRect(x, y, mainNumbers[2], frameRect.height());
-    setSpawningY(frameRect.y() - 2 * mainNumbers[3]);
+    setRect(x, y, squareWidth, frameRect.height());
+    setSpawningY(frameRect.y() - 2 * squareHeight);
 
     stopMusic = new Music();
-    stopMusic->getSound()->setMedia(QUrl("C:/Users/kaihs/Documents/Coding/Bilder/click1.mp3"));
+    stopMusic->getSound()->setMedia(QUrl("C:/Users/kaihs/Documents/Coding/Bilder/Sounds/click1.mp3"));
 
     for(int i = 0; i < 6; i++) {                                                    // Es gibt !6! Squares pro Slot, diese bekommen nach einem durchlauf einen neuen Type
         squares[i] = new Square(this->rect(), view, i, setRandomType(i));           // jedes Square wird erstellt
@@ -61,20 +62,14 @@ int Slot::getSqHeight()
     return rect().height() / 3;
 }
 
-int Slot::setRandomType(int i)
+int Slot::getSpawningY()
 {
+    return spawningY;
+}
 
-    //srand(time(0));
-
-    int rndNumberOrPic = setRandom(i);                                            // randomZahl wird in Funktion setRandomNumber erzeugt und dann in rndNumberOrPic gespeichert
-
-    if(rndNumberOrPic <= 10) {              // Dann -> Bild
-        int rndNumberPic = setRandomPictures(i);
-        return rndNumberPic;
-    } else {                        // Dann -> Zahl
-        int rndNumberNumbers = setRandomNumbers(i);
-        return rndNumberNumbers;
-    }
+void Slot::setSpawningY(int y)
+{
+    spawningY = y;
 }
 
 void Slot::initSlot()
@@ -84,14 +79,18 @@ void Slot::initSlot()
     }
 }
 
-int Slot::getSpawningY()
+int Slot::setRandomType(int i)
 {
-    return spawningY;
-}
+    //srand(time(0));
+    int rndNumberOrPic = setRandom(i);                                            // randomZahl wird in Funktion setRandomNumber erzeugt und dann in rndNumberOrPic gespeichert
 
-void Slot::setSpawningY(int y)
-{
-    spawningY = y;
+    if(rndNumberOrPic <= 10) {              // Dann -> Bild
+        int rndNumberPic = setRandomPictures(i);
+        return rndNumberPic;
+    } else {                        // Dann -> Zahl
+        int rndNumberNumbers = setRandomNumbers(i);
+        return rndNumberNumbers;
+    }
 }
 
 int Slot::setRandom(int i) {
@@ -122,7 +121,6 @@ int Slot::setRandom(int i) {
 }
 
 int Slot::setRandomPictures(int i) {
-    //qsrand(time(0));
     int rnd = qrand() % 90 + 1;
     int type = 0;
     int x = i == 0 ? 5 : i - 1;
