@@ -4,6 +4,7 @@
 
 WinningLines::WinningLines(QGraphicsView *view)
 {
+    setBetHeight(100);
     setWinLineCount(4);
     setButtonCounter(0);
     setView(view);
@@ -14,6 +15,16 @@ WinningLines::WinningLines(QGraphicsView *view)
     }
 }
 
+QGraphicsView *WinningLines::getView() const
+{
+    return view;
+}
+
+void WinningLines::setView(QGraphicsView *value)
+{
+    view = value;
+}
+
 int WinningLines::getWinLineCount() const
 {
     return winLineCount;
@@ -22,6 +33,16 @@ int WinningLines::getWinLineCount() const
 void WinningLines::setWinLineCount(int value)
 {
     winLineCount = value;
+}
+
+int WinningLines::getBetHeight() const
+{
+    return betHeight;
+}
+
+void WinningLines::setBetHeight(int value)
+{
+    betHeight = value;
 }
 
 int WinningLines::getButtonCounter() const
@@ -56,12 +77,14 @@ void WinningLines::changeNumberOfWinningLines() {
 }
 
 void WinningLines::initializeWinningLineParts() {
-    for(int i = 0; i < 9; i++) {
+    for(int i = 0; i <= 9; i++) {
         WinLine[i] = new WinningLineOutput(i, view);
     }
 }
 
-void WinningLines::checkWinnings(Square *shownSquares[5][3]) {
+void WinningLines::checkWinnings(Square *shownSquares[5][3], int count, int sq[5][2], int betHeight) {
+    setBetHeight(betHeight);
+
     for(int i = 0; i < 3; i++) {
         checkHorizontalWinLine(shownSquares, i);
     }
@@ -80,6 +103,10 @@ void WinningLines::checkWinnings(Square *shownSquares[5][3]) {
             }
         }
     }
+
+    if(count > 2) {
+        WinLine[9]->outputRectsOfWarpholes(count, sq);
+    }
 }
 
 void WinningLines::checkHorizontalWinLine(Square *shownSquares[5][3], int i) {
@@ -88,11 +115,10 @@ void WinningLines::checkHorizontalWinLine(Square *shownSquares[5][3], int i) {
     int type2 = shownSquares[2][i]->getType();
     int type3 = shownSquares[3][i]->getType();
     int type4 = shownSquares[4][i]->getType();
-
     checkWinningLines(type0, type1, type2, type3, type4, i);
 
     if(line[i] != 0) {
-        WinLine[i]->outputWinningLine(winLineType[i], line[i]);
+        WinLine[i]->outputWinningLine(winLineType[i], line[i], betHeight);
     }
 }
 
@@ -106,7 +132,7 @@ void WinningLines::checkDiagonalWinLine(Square *shownSquares[5][3], int i) {
     checkWinningLines(type0, type1, type2, type3, type4, (i == 3 ? 3 : 4));
 
     if(line[i] != 0) {
-        WinLine[i]->outputWinningLine(winLineType[i], line[i]);
+        WinLine[i]->outputWinningLine(winLineType[i], line[i], betHeight);
     }
 }
 
@@ -120,7 +146,7 @@ void WinningLines::checkBigWWinLine(Square *shownSquares[5][3], int i) {
     checkWinningLines(type0, type1, type2, type3, type4, (i == 5 ? 5 : 6));
 
     if(line[i] != 0) {
-        WinLine[i]->outputWinningLine(winLineType[i], line[i]);
+        WinLine[i]->outputWinningLine(winLineType[i], line[i], betHeight);
     }
 }
 
@@ -134,7 +160,7 @@ void WinningLines::checkSmallWWinLine(Square *shownSquares[5][3], int i) {
     checkWinningLines(type0, type1, type2, type3, type4, (i == 7 ? 7 : 8));
 
     if(line[i] != 0) {
-        WinLine[i]->outputWinningLine(winLineType[i], line[i]);
+        WinLine[i]->outputWinningLine(winLineType[i], line[i], betHeight);
     }
 }
 
@@ -142,28 +168,31 @@ void WinningLines::checkWinningLines(int type0, int type1, int type2, int type3,
 {
     line[winLineNumber] = 0;
     if((type0 == type1) || (type0 == 4) || (type1 == 4)) {
-        if(type0 < 4 && type0 != type2 && !(type2 == 4)) {
+        if(type0 <= 4 && type1 <= 4 && type0 != type2 && type1 != type2 && !(type2 == 4)) {
             line[winLineNumber] = 2;
-            winLineType[winLineNumber] = type0;
+            if(type0 == 4) {
+                winLineType[winLineNumber] = type1;
+            } else {
+                winLineType[winLineNumber] = type0;
+            }
         }
         if(type0 == 4 && type1 == 4) {
             line[winLineNumber] = 3;
 
-            if(type2 == type3 || (type3 == 4)) {
-                if(type2 == type4 || (type4 == 4)) {
+            if(type3 == 4 || type2 == type3 || type2 == 4) {
+                line[winLineNumber] = 4;
+                if(type4 == 4 || type2 == type4 || type3 == type4 || type2 == 4 || type3 == 4) {
                     line[winLineNumber] = 5;
-                } else {
-                    line[winLineNumber] = 4;
                 }
             }
         }
+
         if(type1 == type2 || (type2 == 4) || (type0 == type2 && type1 == 4)){
             line[winLineNumber] = 3;
-            if(type0 == type3 || (type3 == 4)) {
-                if(type0 == type4 || (type4 == 4)) {
+            if(type3 == 4 || type0 == type3 || type1 == type3 || type2 == type3) {
+                line[winLineNumber] = 4;
+                if(type4 == 4 || type0 == type4 || type1 == type4 || type2 == type4 || type3 == type4) {
                     line[winLineNumber] = 5;
-                } else {
-                    line[winLineNumber] = 4;
                 }
             }
         }
@@ -194,18 +223,8 @@ void WinningLines::outputFreeSpinSquares(Square *shownSquares[5][3]) {
     }
 }
 
-QGraphicsView *WinningLines::getView() const
-{
-    return view;
-}
-
-void WinningLines::setView(QGraphicsView *value)
-{
-    view = value;
-}
-
 void WinningLines::hideWinningLines() {
-    for(int i = 0; i < 9; i++) {
+    for(int i = 0; i <= 9; i++) {
         WinLine[i]->hideWinningLines(line[i]);
     }
 }

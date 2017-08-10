@@ -8,16 +8,16 @@ WinningLineRect::WinningLineRect(int parentalID, QGraphicsView *view)
 {
     setView(view);
     view->scene()->addItem(this);
-    setX(6);
+    setX(sideMargin + 6);
     setY(0);
     setWidth(40);
     setHeight(40);
     setupRect(parentalID);
     text = new QGraphicsTextItem("");
-    text->setPos(sideMargin + 6, topMargin + getY() - 5);
+    text->setPos(sideMargin + 8, getY() - 5);
     getView()->scene()->addItem(text);
 
-    setRect(sideMargin, topMargin, getWidth(), getHeight());
+    setRect(0, 0, getWidth(), getHeight());
     setupRect(parentalID);
     setVisible(false);
 }
@@ -84,27 +84,46 @@ void WinningLineRect::setHeight(int value)
 
 void WinningLineRect::setupRect(int lineID) {
     switch(lineID) {
-    case 0: setY(squareHeight / 2 - height / 2); setPos(getX(), getY()); setBrush(QBrush(Qt::red)); break;
-    case 1: setY(squareHeight + squareHeight / 2 - height / 2); setPos(getX(), getY()); setBrush(QBrush(Qt::green)); break;
-    case 2: setY(2 * squareHeight + squareHeight / 2 - height / 2); setPos(getX(), getY()); setBrush(QBrush(Qt::blue)); break;
-    case 3: setY(5); setPos(getX(), getY()); setBrush(QBrush(Qt::magenta)); break;
-    case 4: setY(3 * squareHeight - height - 7); setPos(getX(), getY()); setBrush(QBrush(Qt::cyan)); break;
-    case 5: setY(5 + this->height + 10); setPos(getX(), getY()); setBrush(QBrush(Qt::gray)); break;
-    case 6: setY(- 6 + 3 * squareHeight - this->height - 10); setPos(getX(), getY()); setBrush(QBrush(Qt::white)); break;
-    case 7: setY(squareHeight - 5 - this->height); setPos(getX(), getY()); setBrush(QBrush(Qt::black)); break;
-    case 8: setY(2 * squareHeight + 5 + this->height); setPos(getX(), getY()); setBrush(QBrush(Qt::red)); break;
-    case 9: setY(5 + this->height); setPos(getX(), getY()); setBrush(QBrush(Qt::red)); break;
-    default: setY(5 + this->height * 2); setPos(getX(), getY()); setBrush(QBrush(Qt::white)); break;
+    case 0:  setY(topMargin +                    squareHeight / 2 - height / 2);     setPos(getX(), getY()); setBrush(QBrush(Qt::red)); break;
+    case 1:  setY(topMargin +     squareHeight + squareHeight / 2 - height / 2);     setPos(getX(), getY()); setBrush(QBrush(Qt::green)); break;
+    case 2:  setY(topMargin + 2 * squareHeight + squareHeight / 2 - height / 2);     setPos(getX(), getY()); setBrush(QBrush(Qt::blue)); break;
+    case 3:  setY(topMargin +                                                    5); setPos(getX(), getY()); setBrush(QBrush(Qt::magenta)); break;
+    case 4:  setY(topMargin + 3 * squareHeight -                    height -     7); setPos(getX(), getY()); setBrush(QBrush(Qt::cyan)); break;
+    case 5:  setY(topMargin +                                       height +    15); setPos(getX(), getY()); setBrush(QBrush(Qt::gray)); break;
+    case 6:  setY(topMargin + 3 * squareHeight -                    height -    16); setPos(getX(), getY()); setBrush(QBrush(Qt::white)); break;
+    case 7:  setY(topMargin +     squareHeight -                    height -     5); setPos(getX(), getY()); setBrush(QBrush(Qt::black)); break;
+    case 8:  setY(topMargin + 2 * squareHeight +                    height +     5); setPos(getX(), getY()); setBrush(QBrush(Qt::red)); break;
+    case 9:  setY(topMargin +                                       height +     5); setPos(getX(), getY()); setBrush(QBrush(Qt::red)); break;
+    default: setY(topMargin +                                       height * 2 + 5); setPos(getX(), getY()); setBrush(QBrush(Qt::white)); break;
     }
 }
 
-void WinningLineRect::displayRect(int type, int length) {
+void WinningLineRect::displayRect(int type, int length, int betHeight) {
+    int number = betHeight * getSymbolValue(type, length);
     htmlText = "<div style='color: #FFFFFF; font-family: DELIRIUM NCV; font-size: 40px'>";
-    htmlText += QString::number(100 * getSymbolValue(type, length));
+    htmlText += QString::number(number);
     htmlText += "</div>";
-    qDebug() << htmlText;
     text->setHtml(htmlText);
     text->setVisible(true);
+
+    if(number >= 1000) {
+        setPos(0, 0);
+        setRect(getX(), getY(), 45, getHeight());
+
+        if(number >= 2000) {
+            setPos(0, 0);
+            setRect(getX(), getY(), 50, getHeight());
+        }
+
+        if(number >= 10000) {
+            setPos(0, 0);
+            setRect(getX(), getY(), 55, getHeight());
+        }
+    } else {
+        setPos(0, 0);
+        setRect(getX(), getY(), 40, getHeight());
+    }
+
     this->setVisible(true);
 }
 

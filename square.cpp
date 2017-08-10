@@ -3,60 +3,36 @@
 #include "globals.h"
 #include <QDebug>
 #include <QGraphicsPixmapItem>
-#include <QRectF>
 
 Square::Square()
 {
     qDebug() << "Default Constructor Square";
 }
 
-Square::Square(QRectF rect, QGraphicsView * view, int i)
-{
-    //set Slot, View, ID,
-    setSlotRect(rect);
-    setView(view);
-    setID1(i);
-    setSqWidth(rect.width());
-    setSqHeight(rect.height() / 3);
-    setPos(rect.x(), rect.y() + getSqHeight() * i);
-    setAnimationOfStaticSquare();
-}
-
 Square::Square(int x, int y, QGraphicsView * view, int i)
 {
     //set Slot, View, ID,
+    setPosX(x);
+    setPosY(y);
     setView(view);
-    setID1(i);
-    setSqWidth(squareWidth);
-    setSqHeight(squareHeight);
+    setID(i);
     setPos(x, y);
-    setAnimationOfStaticSquare();
+    //setAnimationOfStaticSquare();
 }
 
-Square::Square(QRectF rect, QGraphicsView * view, int i, int type)
+Square::Square(int x, int y, QGraphicsView * view, int i, int type)
 {
     //set Slot, View, ID,
-    setSlotRect(rect);
+    setPosX(x);
+    setPosY(y);
     setView(view);
-    setID1(i);
-    setSqWidth(rect.width());
-    setSqHeight(rect.height() / 3);
-    setStepsize(40);                                                        //Standard 10
-    setDefY(rect.y() - getSqHeight() * 2 - 80 /*getStepsize() * 4*/ /*160*/);              // 120 bei stepsize 20, 120/80 bei 40
+    setID(i);
+    setStepsize(20);                                                        //Standard 10
+    setDefY(getPosY() - squareHeight * 2 - 120);              // 130 bei 10, 120 bei stepsize 20, 120/80 bei 40
     setMovingY(getDefY());
     setType(type);
-    setPos(rect.x(), rect.y());
+    setPos(x, y);
     setPixmapOfSquare(type);
-}
-
-void Square::setSlotRect(QRectF rect)
-{
-    this->rect = rect;
-}
-
-QRectF Square::getSlotRect()
-{
-    return rect;
 }
 
 void Square::setView(QGraphicsView * view)
@@ -69,19 +45,74 @@ QGraphicsView *Square::getView()
     return view;
 }
 
-void Square::setID1(int i)
+void Square::setID(int value)
 {
-    this->id1 = i;
+    this->ID = value;
 }
 
-int Square::getID1()
+int Square::getID()
 {
-    return id1;
+    return ID;
 }
 
-void Square::setPositionToDefault()
+int Square::getParentalID() const
 {
-    setPos(getSlotRect().x(), getDefY());
+    return parentalID;
+}
+
+void Square::setParentalID(int value)
+{
+    parentalID = value;
+}
+
+int Square::getType()
+{
+    return type;
+}
+
+void Square::setType(int type)
+{
+    this->type = type;
+}
+
+int Square::getPosX() const
+{
+    return posX;
+}
+
+void Square::setPosX(int value)
+{
+    posX = value;
+}
+
+int Square::getPosY() const
+{
+    return posY;
+}
+
+void Square::setPosY(int value)
+{
+    posY = value;
+}
+
+int Square::getStepsize() const
+{
+    return stepsize;
+}
+
+void Square::setStepsize(int value)
+{
+    stepsize = value;
+}
+
+Animation *Square::getWinAnimation() const
+{
+    return winAnimation;
+}
+
+void Square::setWinAnimation(Animation *value)
+{
+    winAnimation = value;
 }
 
 void Square::setDefY(int defY)
@@ -104,66 +135,42 @@ int Square::getMovingY()
     return movingY;
 }
 
-void Square::setSqHeight(int height)
+void Square::setYPositionToDefault()
 {
-    sqHeight = height;
-}
-
-int Square::getSqHeight()
-{
-    return sqHeight;
-}
-
-void Square::setSqWidth(int width)
-{
-    sqWidth = width;
-}
-
-int Square::getSqWidth()
-{
-    return sqWidth;
-}
-
-int Square::getType()
-{
-    return type;
-}
-
-void Square::setType(int type)
-{
-    this->type = type;
+    setY(getDefY());
 }
 
 void Square::setPixmapOfSquare(int type)
 {
     switch(type){
-    case 0: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Squares/Erde.png")); break;
-    case 1: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Squares/Mond.png")); break;
-    case 2: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Squares/Shuttle.png")); break;
+    case 0: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Squares/Erde.png"));      break;
+    case 1: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Squares/Mond.png"));      break;
+    case 2: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Squares/Shuttle.png"));   break;
     case 3: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Squares/Astronaut.png")); break;
-    case 4: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Squares/Wurmloch.png")); break;
-    case 5: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Squares/Ten.png")); break;
-    case 6: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Squares/Jack.png")); break;
-    case 7: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Squares/Queen.png")); break;
-    case 8: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Squares/King.png")); break;
-    case 9: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Squares/Ace.png")); break;
+    case 4: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Squares/Wurmloch.png"));  break;
+    case 5: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Squares/Ten.png"));       break;
+    case 6: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Squares/Jack.png"));      break;
+    case 7: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Squares/Queen.png"));     break;
+    case 8: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Squares/King.png"));      break;
+    case 9: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Squares/Ace.png"));       break;
+    default: qDebug() << "wrong type of Square";
     }
 }
 
 void Square::setPixmapOfStaticSquare(int linetype)
 {
     switch(linetype){
-    case 0: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/red.png")); break;
-    case 1: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/green.png")); break;
-    case 2: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/blue.png")); break;
-    case 3: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/magenta.png")); break;
-    case 4: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/cyan.png")); break;
-    case 5: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/violet.png")); break;
-    case 6: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/babyblue.png")); break;
-    case 7: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/yellow.png")); break;
-    case 8: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/orange.png")); break;
-    case 9: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/gray.png")); break;
-    default: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/white.png")); break;
+    case 0: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/red.png"));        break;
+    case 1: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/green.png"));      break;
+    case 2: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/blue.png"));       break;
+    case 3: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/magenta.png"));    break;
+    case 4: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/cyan.png"));       break;
+    case 5: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/violet.png"));     break;
+    case 6: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/babyblue.png"));   break;
+    case 7: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/yellow.png"));     break;
+    case 8: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/orange.png"));     break;
+    case 9: setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/white.png"));      break;
+    default: qDebug() << "NaN of Line";
     }
 }
 
@@ -172,52 +179,16 @@ void Square::hidePixmapOfStaticSquare()
     setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/winlines/Rects/empty.png"));
 }
 
-int Square::getParentalID() const
-{
-    return parentalID;
-}
-
-void Square::setParentalID(int value)
-{
-    parentalID = value;
-}
-
 void Square::setAnimationOfStaticSquare()
 {
-    winAnimation = new Animation(getView(), this->x(), this->y());
-}
-
-int Square::getPosY()
-{
-    return this->y();
-}
-
-int Square::getStepsize() const
-{
-    return stepsize;
-}
-
-void Square::setStepsize(int value)
-{
-    stepsize = value;
+    winAnimation = new Animation(getView(), pos().x(), pos().y());
 }
 
 void Square::moveSquare()
 {
-    if(y() >= getSlotRect().height() + getSqHeight()){
-        setPos(getSlotRect().x(), getDefY());              // Position wird gesetzt, muss vom Ausgangs-Y noch um 105 px verschoben werden
+    if(pos().y() >= squareHeight * 4){
+        setPos(pos().x(), getDefY());
     } else {
-        setPos(x(),y() + getStepsize());
+        setPos(pos().x(), pos().y() + getStepsize());
     }
 }
-
-Animation *Square::getWinAnimation() const
-{
-    return winAnimation;
-}
-
-void Square::setWinAnimation(Animation *value)
-{
-    winAnimation = value;
-}
-

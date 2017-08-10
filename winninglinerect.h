@@ -10,25 +10,26 @@ class WinningLineRect: public QGraphicsRectItem
 {
 public:
     WinningLineRect();
-    WinningLineRect(int parentalID, QGraphicsView *view);
+    WinningLineRect(int parentalID, QGraphicsView *);
 
     QGraphicsView *getView() const;
-    void setView(QGraphicsView *value);    
-    int getWidth() const;
-    void setWidth(int value);
-    int getHeight() const;
-    void setHeight(int value);
-    int getX() const;
-    void setX(int value);
-    int getY() const;
-    void setY(int value);
+    void setView(QGraphicsView *);
+    int  getWidth() const;
+    void setWidth(int);
+    int  getHeight() const;
+    void setHeight(int);
+    int  getX() const;
+    void setX(int);
+    int  getY() const;
+    void setY(int);
     QGraphicsTextItem *getText() const;
-    void setText(QGraphicsTextItem *value);
+    void setText(QGraphicsTextItem *);
 
-    void setupRect(int lineID);
-    void displayRect(int type, int length);
+    void setupRect(int);
+    void displayRect(int, int, int);
     void hideRect();
-    int getSymbolValue(int type, int length);
+    int  getSymbolValue(int, int);
+
 
 private:
     int width;

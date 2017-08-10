@@ -1,6 +1,8 @@
 #ifndef BORDER_H
 #define BORDER_H
 
+#include "button.h"
+
 #include <QGraphicsRectItem>
 #include <QGraphicsView>
 #include <QPushButton>
@@ -10,13 +12,13 @@ public:
     Border();
     Border(QGraphicsView *);
 
-    void setStartButton();
-
     void setView(QGraphicsView *);
     QGraphicsView * getView();
-    QPushButton * startButton;
 
-    void setExitButton();
+    // public variables
+    Button *startButton;
+    Button *raiseButton;
+
 private:
     QGraphicsView * view;
 };

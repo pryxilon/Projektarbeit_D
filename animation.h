@@ -14,33 +14,33 @@ public:
     Animation();
     Animation(QGraphicsView *, int, int);
     Animation(QGraphicsView *view, int x, int y, int width, int height);
+
+    QGraphicsView *getView() const;
+    void setView(QGraphicsView *value);
     QLabel *getLabel() const;
     void setLabel(QLabel *value);
-
-    void playAnimation();
-    void stopAnimation();
+    QMediaPlayer *getVideoMusic() const;
+    void setVideoMusic(QMediaPlayer *value);
+    QMovie *getAnimation() const;
+    void setAnimation(QMovie *value);
+    qint64 getStartTimeAnimation() const;
+    void setStartTimeAnimation(const qint64 &value);
     bool getAnimationIsRunning() const;
     void setAnimationIsRunning(bool value);
 
+    void playAnimation();
+    void stopAnimation();
     void setAnimationNonvisible();
 
-    QMediaPlayer *getVideoMusic() const;
-    void setVideoMusic(QMediaPlayer *value);
-
-    QMovie *getAnimation() const;
-    void setAnimation(QMovie *value);
-
-    qint64 getStartTimeAnimation() const;
-    void setStartTimeAnimation(const qint64 &value);
 private:
+    QGraphicsView *view;
     QLabel * label;
-    qint64 startTimeAnimation;
-    bool videoIsRunning;
-    QMovie *animation;
-    QGraphicsProxyWidget * proxyVid;
-    bool animationIsRunning = false;
-
     QMediaPlayer *videoMusic;
+    QMovie *animation;
+    qint64 startTimeAnimation;
+    bool animationIsRunning = false;
+    QGraphicsProxyWidget * proxyVid;
+
 };
 
 #endif // ANIMATION_H

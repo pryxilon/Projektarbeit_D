@@ -11,16 +11,27 @@ public:
     // Constructors
     Slot();
     Slot(QGraphicsView *);
-    Slot(int, int, QRectF, QGraphicsView *, int);
+    Slot(int x, int y, QGraphicsView *view, int id);
 
     // getters and setters
     void setView(QGraphicsView *);
     QGraphicsView * getView();
+    int getX() const;
+    void setX(int value);
+    int getY() const;
+    void setY(int value);
+    int getWidth() const;
+    void setWidth(int value);
+    int getHeight() const;
+    void setHeight(int value);
     void setID(int);
     int getID();
     void setAnzahlSquares(int);
     int getAnzahlSquares();
-    int getSqHeight();
+    bool getFinished() const;
+    void setFinished(bool value);
+    Music *getStopMusic() const;
+    void setStopMusic(Music *value);
 
     // Functions
     int setRandomType(int);
@@ -38,18 +49,16 @@ public:
     Square * squares[6];
     Square * staticSquares[3];
 
-    bool getFinished() const;
-    void setFinished(bool value);
-
-    Music *getStopMusic() const;
-    void setStopMusic(Music *value);
 
 private:
+    int x;
+    int y;
+    int width;
+    int height;
     int countSquares;
     QGraphicsView * view;
     int id;
     int anzahlSquares;
-    int sqHeight;
     int spawningY;
     int counter = 0;
     int counterPic = 0;

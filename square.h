@@ -4,7 +4,6 @@
 #include "animation.h"
 
 #include <QGraphicsPixmapItem>
-#include <QRectF>
 #include <QObject>
 #include <QGraphicsView>
 
@@ -12,33 +11,27 @@
 class Square: public QGraphicsPixmapItem {
 public:
     Square();
-    Square(QRectF, QGraphicsView *, int);
     Square(int, int, QGraphicsView *, int);
-    Square(QRectF, QGraphicsView *, int, int);
-
-    void setSlotRect(QRectF);
-    QRectF getSlotRect();
-    void setView(QGraphicsView *);
-    QGraphicsView * getView();
+    Square(int, int, QGraphicsView *, int, int);
 
     // setter und getter
+
+    void setView(QGraphicsView *);
+    QGraphicsView * getView();
+    void setID(int);
+    int  getID();
     int  getParentalID() const;
     void setParentalID(int value);
-    void setID1(int);
-    int  getID1();
-    void setPositionToDefault();
     int  getType();
     void setType(int);
+    int  getPosX() const;
+    void setPosX(int value);
+    int  getPosY() const;
+    void setPosY(int value);
     int  getStepsize() const;
     void setStepsize(int value);
-    int  getPosY();
     Animation *getWinAnimation() const;
     void setWinAnimation(Animation *value);
-
-    void setPixmapOfSquare(int);
-    void setPixmapOfStaticSquare(int type);
-    void setAnimationOfStaticSquare();
-    void hidePixmapOfStaticSquare();
 
     // Y-Axis
     void setDefY(int);
@@ -46,26 +39,27 @@ public:
     void setMovingY(int);
     int  getMovingY();
 
-    // Square dimensions
-    void setSqHeight(int);
-    int  getSqHeight();
-    void setSqWidth(int);
-    int  getSqWidth();
+    void setYPositionToDefault();
+    void setPixmapOfSquare(int);
+    void setPixmapOfStaticSquare(int type);
+    void hidePixmapOfStaticSquare();
+    void setAnimationOfStaticSquare();
 
     // Hauptfunktion Square
     void moveSquare();
 
 private:
+    int posX;
+    int posY;
     QRectF rect;
     int parentalID;
     QGraphicsView * view;
-    int id1;
+    int ID;
     int defY;
     QPixmap pic;
     bool activeMoving;
     int movingY;
 
-    int sqHeight, sqWidth;
     int type;
     int stepsize;
     Animation * winAnimation;
