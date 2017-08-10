@@ -6,8 +6,8 @@ Separator::Separator(int x, int y)
     setPos(x, y);
     setWidth(20);
     setHeight(720);
-    setPosX(x);
-    setPosY(y);
+    setX(x);
+    setY(y);
     setPixmap(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/Separator/Separator2.png"));
 }
 
@@ -31,22 +31,22 @@ void Separator::setHeight(int value)
     height = value;
 }
 
-int Separator::getPosX() const
+int Separator::getX() const
 {
-    return posX;
+    return x;
 }
 
-void Separator::setPosX(int value)
+void Separator::setX(int value)
 {
-    posX = value;
+    x = value;
 }
 
-int Separator::getPosY() const
+int Separator::getY() const
 {
-    return posY;
+    return y;
 }
 
-void Separator::setPosY(int value)
+void Separator::setY(int value)
 {
-    posY = value;
+    y = value;
 }

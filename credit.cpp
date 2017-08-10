@@ -7,6 +7,16 @@ Credit::Credit(GameFrame * gf)
     setPlayerWin(false);
 }
 
+GameFrame *Credit::getGf() const
+{
+    return gf;
+}
+
+void Credit::setGf(GameFrame *value)
+{
+    gf = value;
+}
+
 int Credit::getCredit() const
 {
     return credit;
@@ -17,11 +27,54 @@ void Credit::setCredit(int value)
     credit = value;
 }
 
-void Credit::GameOver()
+int Credit::getBet() const
 {
-    if(credit == 0){
+    return bet;
+}
 
-    }
+void Credit::setBet(int value)
+{
+    bet = value;
+}
+
+int Credit::getMaxBet() const
+{
+    return maxBet;
+}
+
+int Credit::getLastGain() const
+{
+    return lastGain;
+}
+
+void Credit::setLastGain(int value)
+{
+    lastGain = value;
+}
+
+bool Credit::getPlayerWin() const
+{
+    return playerWin;
+}
+
+void Credit::setPlayerWin(bool value)
+{
+    playerWin = value;
+}
+
+int Credit::getBetButton() const
+{
+    return betButton;
+}
+
+void Credit::setBetButton(int value)
+{
+    betButton = value;
+}
+
+void Credit::betting()
+{
+    setCredit(getCredit() - bet);
 }
 
 void Credit::addWonCredits()
@@ -44,19 +97,16 @@ void Credit::addWonCredits()
     }
 }
 
-int Credit::getBet() const
-{
-    return bet;
-}
-
-void Credit::setBet(int value)
-{
-    bet = value;
-}
-
-int Credit::getMaxBet() const
-{
-    return maxBet;
+void Credit::handleRaiseButton() {
+    qDebug() << betButton;
+    switch(betButton) {
+    case 0: betButton = 1; bet = 200; break;
+    case 1: betButton = 2; bet = 300; break;
+    case 2: betButton = 3; bet = 400; break;
+    case 3: betButton = 4; bet = 500; break;
+    case 4: betButton = 0; bet = 100; break;
+    default: betButton = 0; bet = 100; break;
+    }
 }
 
 int Credit::getSymbolValue(int type, int length)
@@ -171,29 +221,4 @@ int Credit::getSymbolValue(int type, int length)
         }
     default: return 0;
     }
-}
-
-void Credit::betting()
-{
-    setCredit(getCredit() - bet);
-}
-
-int Credit::getLastGain() const
-{
-    return lastGain;
-}
-
-void Credit::setLastGain(int value)
-{
-    lastGain = value;
-}
-
-bool Credit::getPlayerWin() const
-{
-    return playerWin;
-}
-
-void Credit::setPlayerWin(bool value)
-{
-    playerWin = value;
 }

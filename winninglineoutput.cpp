@@ -5,10 +5,19 @@
 WinningLineOutput::WinningLineOutput(int ID, QGraphicsView *view)
 {
     setID(ID);
-    setNameById();
     setView(view);
     initializeWinLine();
     winRect = new WinningLineRect(ID, view);
+}
+
+QGraphicsView *WinningLineOutput::getView() const
+{
+    return view;
+}
+
+void WinningLineOutput::setView(QGraphicsView *value)
+{
+    view = value;
 }
 
 int WinningLineOutput::getID() const
@@ -21,14 +30,14 @@ void WinningLineOutput::setID(int value)
     ID = value;
 }
 
-char *WinningLineOutput::getName() const
+WinningLineRect *WinningLineOutput::getWinRect() const
 {
-    return name;
+    return winRect;
 }
 
-void WinningLineOutput::setName(char *value)
+void WinningLineOutput::setWinRect(WinningLineRect *value)
 {
-    name = value;
+    winRect = value;
 }
 
 void WinningLineOutput::initializeWinLine() {
@@ -42,6 +51,7 @@ void WinningLineOutput::initializeWinLine() {
     case 6: outputBigWLower(); break;
     case 7: outputSmallWUpper(); break;
     case 8: outputSmallWLower(); break;
+    case 9: setRectsOfWarpholes(); break;
     default: break;
     }
 }
@@ -133,16 +143,71 @@ void WinningLineOutput::outputSmallWLower() {
     for(int i = 0; i < 4; i++) {
         parts[i] = new WinningLineConnecter(i * 2 + 1, (i % 2 == 0 ? 2 : 1), ID);
     }
-    parts[0] = new WinningLineConnecter(1, 2, ID);
-    parts[1] = new WinningLineConnecter(3, 1, ID);
-    parts[2] = new WinningLineConnecter(5, 2, ID);
-    parts[3] = new WinningLineConnecter(7, 1, ID);
 
     for(int i = 0; i < 5; i++) {
         staticSquares[i] = new Square(sideMargin + i * squareWidth + i * separatorWidth, topMargin + (i % 2 == 0 ? 2 : 1) * squareHeight, view, i);
     }
 
     addPartsToScene();
+}
+
+void WinningLineOutput::setRectsOfWarpholes() {
+    for(int i = 0; i < 5; i++) {
+        staticSquares[i] = new Square(0, 0, view, 9);
+    }
+
+    for(int i = 0; i < 5; i++) {
+        view->scene()->addItem(staticSquares[i]);
+    }
+}
+
+void WinningLineOutput::outputWinningLine(int type, int length, int betHeight) {
+    if(length != 0){
+        staticSquares[0]->setPixmapOfStaticSquare(ID);
+        winRect->displayRect(type, length, betHeight);
+        parts[0]->setVisible(true);
+        staticSquares[1]->setPixmapOfStaticSquare(ID);
+        if(length >= 3){
+            for(int i = 1; i < length - 1; i++) {
+                parts[i]->setVisible(true);
+                staticSquares[i+1]->setPixmapOfStaticSquare(ID);
+            }
+        }
+    }
+}
+
+void WinningLineOutput::outputRectsOfWarpholes(int count, int sq[5][2]) {
+    if(count > 2){
+        staticSquares[0]->setPixmapOfStaticSquare(9);
+        staticSquares[0]->setPos(sideMargin + sq[0][0] * squareWidth + sq[0][0] * separatorWidth, topMargin + sq[0][1] * squareHeight);
+        staticSquares[1]->setPixmapOfStaticSquare(9);
+        staticSquares[1]->setPos(sideMargin + sq[1][0] * squareWidth + sq[1][0] * separatorWidth, topMargin + sq[1][1] * squareHeight);
+        staticSquares[2]->setPixmapOfStaticSquare(9);
+        staticSquares[2]->setPos(sideMargin + sq[2][0] * squareWidth + sq[2][0] * separatorWidth, topMargin + sq[2][1] * squareHeight);
+        if(count == 4) {
+            staticSquares[3]->setPixmapOfStaticSquare(9);
+            staticSquares[3]->setPos(sideMargin + sq[3][0] * squareWidth + sq[3][0] * separatorWidth, topMargin + sq[3][1] * squareHeight);
+        }
+        if(count == 5) {
+            staticSquares[4]->setPixmapOfStaticSquare(9);
+            staticSquares[4]->setPos(sideMargin + sq[4][0] * squareWidth + sq[4][0] * separatorWidth, topMargin + sq[4][1] * squareHeight);
+        }
+    }
+}
+
+void WinningLineOutput::hideWinningLines(int win) {
+    for(int j = 0; j < 5; j++) {
+        staticSquares[j]->hidePixmapOfStaticSquare();
+    }
+
+    if(ID != 9){
+        for(int j = 0; j < 4; j++) {
+            parts[j]->setVisible(false);
+        }
+        if(win != 0) {
+            winRect->hideRect();
+        }
+    }
 }
 
 void WinningLineOutput::addPartsToScene() {
@@ -152,76 +217,4 @@ void WinningLineOutput::addPartsToScene() {
     for(int i = 0; i < 4; i++) {
         view->scene()->addItem(parts[i]);
     }
-}
-
-WinningLineRect *WinningLineOutput::getWinRect() const
-{
-    return winRect;
-}
-
-void WinningLineOutput::setWinRect(WinningLineRect *value)
-{
-    winRect = value;
-}
-
-void WinningLineOutput::setNameById() {
-    qDebug() << "setNameByID not used atm";
-    /*switch(ID) {
-    case 0: setName('HorizontalUpper'); break;
-    case 1: setName('HorizontalMid'); break;
-    case 2: setName('HorizontalLower'); break;
-    case 3: setName('DiagonalUpLowUp'); break;
-    case 4: setName('DiagonalLowUpLow'); break;
-    case 5: setName('BigWUpper'); break;
-    case 6: setName('BigWLower'); break;
-    case 7: setName('SmallWUpper'); break;
-    case 8: setName('SmallWLower'); break;
-    }*/
-}
-
-void WinningLineOutput::outputWinningLine(int type, int length) {
-    if(length != 0){
-        staticSquares[0]->setPixmapOfStaticSquare(ID);
-        winRect->displayRect(type, length);
-        parts[0]->setVisible(true);
-        staticSquares[1]->setPixmapOfStaticSquare(ID);
-        if(length == 3){
-            parts[1]->setVisible(true);
-            staticSquares[2]->setPixmapOfStaticSquare(ID);
-        }
-        if(length == 4) {
-            for(int i = 1; i < 4; i++) {
-                parts[i]->setVisible(true);
-                staticSquares[i+1]->setPixmapOfStaticSquare(ID);
-            }
-        }
-        if(length == 5) {
-            for(int i = 1; i < 5; i++) {
-                parts[i]->setVisible(true);
-                staticSquares[i+1]->setPixmapOfStaticSquare(ID);
-            }
-        }
-    }
-}
-
-void WinningLineOutput::hideWinningLines(int win) {
-    for(int j = 0; j < 4; j++) {
-        parts[j]->setVisible(false);;
-    }
-    for(int j = 0; j < 5; j++) {
-        staticSquares[j]->hidePixmapOfStaticSquare();
-    }
-    if(win != 0) {
-        winRect->hideRect();
-    }
-}
-
-QGraphicsView *WinningLineOutput::getView() const
-{
-    return view;
-}
-
-void WinningLineOutput::setView(QGraphicsView *value)
-{
-    view = value;
 }

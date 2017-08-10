@@ -1,82 +1,76 @@
 #ifndef GAMEFRAME_H
 #define GAMEFRAME_H
 
-#include <QGraphicsProxyWidget>
-#include <QGraphicsRectItem>
 #include <QGraphicsView>
-#include <QLabel>
-#include <QMediaPlayer>
-#include <QMovie>
+#include <QPushButton>
+#include <QTime>
 #include "slot.h"
 #include "winninglines.h"
+#include "gameframeoverlay.h"
 
 class GameFrame: public QGraphicsRectItem {
 public:
     GameFrame();
     GameFrame(QGraphicsView *);
 
-    // Funktionen
-    void initializeSlots();
-    void gameFrameSlotCycle();
-    void raiseFreeSpins();
-    void highlightWinningLines();
-    void dehighlightWinningLines();
-    void setWinningLinesToZero();
-    void checkShowingSquares();
-    void checkForWinningLines(int);
-    void resetPlayAndSetGame();
-    void playVideoFreeSpin();
-    void hideVideoFreeSpin();
-
     // Setter und Getter
     void setView(QGraphicsView *);
     QGraphicsView * getView();
-    QMovie *getMovie() const;
-    void setMovie(QMovie *value);
-    QLabel *getWarpHoleLabel() const;
-    void setWarpHoleLabel(QLabel *value);
-    bool getVideoIsRunning() const;
-    void setVideoIsRunning(bool value);
-    QMediaPlayer *getVideoMusic() const;
-    void setVideoMusic(QMediaPlayer *value);
+    int  getX() const;
+    void setX(int);
+    int  getY() const;
+    void setY(int);
+    int  getWidth() const;
+    void setWidth(int);
+    int  getHeight() const;
+    void setHeight(int);
+    int  getFreeSpin() const;
+    void setFreeSpin(int);
+    Animation getFreeSpinVideo() const;
+    void setFreeSpinVideo(const Animation &);
+    bool getPlayerWin() const;
+    void setPlayerWin(bool);
     WinningLines *getWinLines() const;
-    void setWinLines(WinningLines *value);
+    void setWinLines(WinningLines *);
+    Music *getNoCredit() const;
+    void setNoCredit(Music *value);
 
     void setSlots(Slot *, int);
-    int setMaxSpinsFirstSlot();
-    int setAddSpinsOtherSlots();
-    int getFreeSpin() const;
-    void setFreeSpin(int);
+    int  setMaxSpinsFirstSlot();
+    int  setAddSpinsOtherSlots();
+
+    // Funktionen
+    void initializeSlots();
+    void resetPlayAndSetGame(int);
+    void gameFrameSlotCycle();
+    void checkShowingSquares(int);
+    void raiseFreeSpins();
+    void wait(int);
 
     // public Variables
-    Slot * slot[5];
+    Slot *slot[5];
     int line[10];
     int winLineType[10];
 
-    qint64 getCurrentTimeVideo() const;
-    void setCurrentTimeVideo(const qint64 &value);
+    GameFrameOverlay *gameOver;
+    GameFrameOverlay *freeSpinOverlay;
 
-    bool getPlayerWin() const;
-    void setPlayerWin(bool value);
-
-    Animation getFreeSpinVideo() const;
-    void setFreeSpinVideo(const Animation &value);
 
 private:
     QGraphicsView * view;
-    Square * shownSquares[5][3];
+    int x;
+    int y;
+    int width;
+    int height;
     int freeSpin = 0;
-    QMovie * movie;
-    QLabel * warpHoleLabel;
-    qint64 currentTimeVideo;
-    QGraphicsProxyWidget * proxyVid;
-    bool videoIsRunning = false;
-    QMediaPlayer * videoMusic;
-    Music * winSound;
     bool playerWin;
+    Square *shownSquares[5][3];
+    Music *winSound;
+    Music *warpSound;
+    Music *noCredit;
     Animation freeSpinVideo;
-
     WinningLines *WinLines;
+    QTime dieTime;
 };
 
 #endif // GAMEFRAME_H

@@ -46,6 +46,16 @@ Animation::Animation(QGraphicsView * view, int x, int y, int width, int height) 
     //proxyVid->setPos(sideMargin + slot * squareWidth + slot * separatorWidth, topMargin + pos * squareHeight);
 }
 
+QGraphicsView *Animation::getView() const
+{
+    return view;
+}
+
+void Animation::setView(QGraphicsView *value)
+{
+    view = value;
+}
+
 QLabel *Animation::getLabel() const
 {
     return label;
@@ -54,23 +64,6 @@ QLabel *Animation::getLabel() const
 void Animation::setLabel(QLabel *value)
 {
     label = value;
-}
-
-void Animation::playAnimation()
-{
-    setAnimationIsRunning(true);
-    animation->start();
-
-    label->setVisible(true);
-    setStartTimeAnimation(QDateTime::currentSecsSinceEpoch());
-}
-
-void Animation::stopAnimation()
-{
-    animation->stop();
-    label->setVisible(false);
-    setAnimationIsRunning(false);
-    videoMusic->stop();
 }
 
 QMediaPlayer *Animation::getVideoMusic() const
@@ -113,3 +106,20 @@ void Animation::setAnimationIsRunning(bool value)
     animationIsRunning = value;
 }
 
+void Animation::playAnimation()
+{
+    setAnimationIsRunning(true);
+    animation->start();
+    videoMusic->play();
+
+    label->setVisible(true);
+    setStartTimeAnimation(QDateTime::currentSecsSinceEpoch());
+}
+
+void Animation::stopAnimation()
+{
+    animation->stop();
+    label->setVisible(false);
+    setAnimationIsRunning(false);
+    videoMusic->stop();
+}

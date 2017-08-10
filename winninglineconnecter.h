@@ -10,31 +10,29 @@ class WinningLineConnecter: public QGraphicsPixmapItem
 {
 public:
     WinningLineConnecter();
-    WinningLineConnecter(int ID, int type, int parentalId);
+    WinningLineConnecter(int, int, int);
 
-    void initialize(int, int);
-    void setPosition(int type);
-    void setPositionEven(int ID);
-    void setPositionDiagonal(int ID);
-    void setPositionBigW(int ID);
+    int  getID() const;
+    void setID(int);
+    int  getType() const;
+    void setType(int);
+    int  getParentalId() const;
+    void setParentalId(int);
+    int  getHeight() const;
+    void setHeight(int);
 
-    int getHeight() const;
-    void setHeight(int value);
-    int getType() const;
-    void setType(int value);
-    int getID() const;
-    void setID(int value);
-
-
+    void initialize(int);
     void setupPixmap();
-    int getParentalId() const;
-    void setParentalId(int value);
+    void setPosition(int);
+    void setPositionEven();
+    void setPositionDiagonal();
+    void setPositionBigW();
 
 private:
-    int height;
     int ID;
     int type;
     int parentalId;
+    int height;
 };
 
 #endif // WINNINGLINECONNECTER_H

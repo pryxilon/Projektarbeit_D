@@ -13,17 +13,17 @@ public:
     int getHeight() const;
     void setHeight(int value);
 
-    int getPosX() const;
-    void setPosX(int value);
+    int getX() const;
+    void setX(int value);
 
-    int getPosY() const;
-    void setPosY(int value);
+    int getY() const;
+    void setY(int value);
 
 private:
     int width;
     int height;
-    int posX;
-    int posY;
+    int x;
+    int y;
 };
 
 #endif // SEPARATOR_H

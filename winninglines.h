@@ -11,45 +11,40 @@ class WinningLines: public Square
 public:
     WinningLines();
     WinningLines(QGraphicsView*);
-    int getLength() const;
-    void setLength(int value);
-    int getType() const;
-    void setType(int value);
     QGraphicsView *getView() const;
-    void setView(QGraphicsView *value);
+    void setView(QGraphicsView *);
+    int  getWinLineCount() const;
+    void setWinLineCount(int);
+    int  getBetHeight() const;
+    void setBetHeight(int);
+    int  getButtonCounter() const;
+    void setButtonCounter(int);
 
-    void setHorizontalWinLine(int line);
-    int getWinLineCount() const;
-    void setWinLineCount(int value);
-    int getButtonCounter() const;
-    void setButtonCounter(int value);
-    void setWinningLinesToZero();
-
-    void initializeWinningLineParts();
     void handleWinLineButtonClick();
     void changeNumberOfWinningLines();
-    void checkWinnings(Square*[5][3]);
-    void checkHorizontalWinLine(Square*[5][3], int i);
-    void checkDiagonalWinLine(Square*[5][3], int i);
-    void checkBigWWinLine(Square*[5][3], int i);
-    void checkSmallWWinLine(Square*[5][3], int i);
+    void initializeWinningLineParts();
+
+    void checkWinnings(Square*[5][3], int, int[5][2], int);
+    void checkHorizontalWinLine(Square*[5][3], int);
+    void checkDiagonalWinLine(Square*[5][3], int);
+    void checkBigWWinLine(Square*[5][3], int);
+    void checkSmallWWinLine(Square*[5][3], int);
 
     void checkWinningLines(int, int, int, int, int, int);
+    void outputFreeSpinSquares(Square *shownSquares[5][3]);
     void hideWinningLines();
+    void setWinningLinesToZero();
 
     //public variables
     int line[10];
     int winLineType[10];
-
     WinningLineOutput * WinLine[10];
 
-    void outputFreeSpinSquares(Square *shownSquares[5][3]);
 private:
-    int length;
-    int type;
-    int winLineCount;
-    int buttonCounter;
     QGraphicsView *view;
+    int winLineCount;
+    int betHeight;
+    int buttonCounter;
 };
 
 #endif // WINNINGLINE_H

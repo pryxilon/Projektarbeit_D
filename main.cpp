@@ -20,12 +20,10 @@ int main(int argc, char *argv[])
     QGraphicsScene * scene = new QGraphicsScene();
 
     QGraphicsView * view = new QGraphicsView(scene);
-
     view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
     view->show();
-    //view->setWindowState(Qt::WindowMaximized);
+    view->setWindowState(Qt::WindowFullScreen);
     view->setFixedSize(1920, 1080);
     view->setSceneRect(0, 0, 1920, 1080);
 
@@ -51,61 +49,96 @@ int main(int argc, char *argv[])
     Animation *freeSpinVideo = new Animation(view, 1280, 720);
 
     Credit * credits = new Credit(gf);
-    credits->setCredit(5000);
+    credits->setCredit(2000);
 
     Border * bf = new Border(view);
     scene->addItem(bf);
 
     Borderpart * gameBorders[4];
-
     for(int i = 0; i < 4; i++) {
         gameBorders[i] = new Borderpart(i, true);
         scene->addItem(gameBorders[i]);
     }
 
-    CreditOutput * betHeightLabel = new CreditOutput(320, view);
-    CreditOutput * lastWinLabel = new CreditOutput(1100, view);
-    CreditOutput * creditLabel = new CreditOutput(1360, view);
-    CreditOutput * freeSpinLabel = new CreditOutput(view);
-    QGraphicsProxyWidget * proxy;
-
+    CreditOutput * betHeightLabel = new CreditOutput(320, view, gf);
+    CreditOutput * lastWinLabel = new CreditOutput(1100, view, gf);
+    CreditOutput * creditLabel = new CreditOutput(1360, view, gf);
+    betHeightLabel->setText(QString::number(credits->getBet()));
     creditLabel->setText(QString::number(credits->getCredit()));
 
-    //gf->setFreeSpin(5);
+    CreditOutput * freeSpinLabel = new CreditOutput(view, gf);
+    QGraphicsProxyWidget * proxy;
+    proxy = scene->addWidget(freeSpinLabel);
+    proxy->setPos(320, 50);
+    freeSpinLabel->setVisible(false);
+
+    int freeSpinWin;
 
     while(1) {
-        betHeightLabel->setText(QString::number(credits->getBet()));
-        lastWinLabel->setText(QString::number(credits->getLastGain()));
+        if(credits->getCredit() <= 0) {
+            gf->gameOver->setLayerVisibility(true);
+            if(gf->gameOver->gameOverButton->isDown()) {
+                gf->gameOver->setLayerVisibility(false);
 
-        if((bf->startButton->isDown() && freeSpinVideo->getAnimationIsRunning() == false && gf->slot[0]->staticSquares[0])) {
-            credits->betting();
-            creditLabel->setText(QString::number(credits->getCredit()));
-            gf->resetPlayAndSetGame();
+                credits->setCredit(2000);
+                creditLabel->setText(QString::number(credits->getCredit()));
+            }
+        } else {
+            lastWinLabel->setText(QString::number(credits->getLastGain()));
 
-            credits->addWonCredits();
-            creditLabel->setText(QString::number(credits->getCredit()));
-        }
+            if((bf->startButton->isDown() && freeSpinVideo->getAnimationIsRunning() == false && gf->slot[0]->staticSquares[0]) && credits->getCredit() >= credits->getBet()) {
+                credits->betting();
+                creditLabel->setText(QString::number(credits->getCredit()));
+                gf->resetPlayAndSetGame(credits->getBet());
 
-        if(gf->getFreeSpin() != 0) {
-
-            if(freeSpinVideo->getAnimationIsRunning() == false) {
-                freeSpinVideo->playAnimation();
+                credits->addWonCredits();
+                creditLabel->setText(QString::number(credits->getCredit()));
+            } else if((bf->startButton->isDown() && freeSpinVideo->getAnimationIsRunning() == false && gf->slot[0]->staticSquares[0]) && credits->getCredit() < credits->getBet()) {
+                gf->getNoCredit()->getSound()->play();
+                creditLabel->blink();
             }
 
-            if((freeSpinVideo->getAnimationIsRunning() == true) && ((freeSpinVideo->getStartTimeAnimation() + 4) - QDateTime::currentSecsSinceEpoch() < 0)) {
-                freeSpinVideo->stopAnimation();
+            if(bf->raiseButton->isDown() && freeSpinVideo->getAnimationIsRunning() == false) {
+                credits->handleRaiseButton();
+                betHeightLabel->setText(QString::number(credits->getBet()));
+                gf->wait(500);
+            }
 
-                proxy = scene->addWidget(freeSpinLabel);
-                proxy->setPos(320, 50);
-                while(gf->getFreeSpin() > 0) {
-                    freeSpinLabel->setText("Freispiele: " + QString::number(gf->getFreeSpin()));
-                    lastWinLabel->setText(QString::number(credits->getLastGain()));
-                    gf->resetPlayAndSetGame();
-                    credits->addWonCredits();
-                    creditLabel->setText(QString::number(credits->getCredit()));
-                    gf->setFreeSpin(gf->getFreeSpin() - 1);
+            if(gf->getFreeSpin() != 0) {
+                gf->wait(1500);
+
+                if(freeSpinVideo->getAnimationIsRunning() == false) {
+                    freeSpinVideo->playAnimation();
+                    gf->wait(1000);
                 }
-                scene->removeItem(freeSpinLabel->graphicsProxyWidget());
+
+                if((freeSpinVideo->getAnimationIsRunning() == true) && ((freeSpinVideo->getStartTimeAnimation() + 4) - QDateTime::currentSecsSinceEpoch() < 0)) {
+                    freeSpinVideo->stopAnimation();
+
+                    freeSpinWin = credits->getCredit();
+
+                    freeSpinLabel->setVisible(true);
+                    while(gf->getFreeSpin() > 0) {
+                        freeSpinLabel->setText("Freispiele: " + QString::number(gf->getFreeSpin()));
+                        lastWinLabel->setText(QString::number(credits->getLastGain()));
+
+                        gf->resetPlayAndSetGame(credits->getBet());
+
+                        credits->addWonCredits();
+                        creditLabel->setText(QString::number(credits->getCredit()));
+
+                        gf->setFreeSpin(gf->getFreeSpin() - 1);
+
+                        gf->wait(1000);
+                    }
+
+                    freeSpinLabel->setVisible(false);
+                    freeSpinWin = credits->getCredit() - freeSpinWin;
+                    gf->freeSpinOverlay->setWinHeightText(freeSpinWin);
+
+                    gf->wait(5000);
+                    gf->freeSpinOverlay->setLayerVisibility(false);
+                }
             }
         }
 

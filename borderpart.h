@@ -9,14 +9,16 @@ class Borderpart: public QGraphicsPixmapItem {
 public:
     Borderpart();
     Borderpart(int, bool);
-    int getId() const;
-    void setId(int value);
 
+    int  getID() const;
+    void setID(int);
     bool getIsFrame() const;
-    void setIsFrame(bool value);
+    void setIsFrame(bool);
+
+    void setupPixmap();
 
 private:
-    int id;
+    int  ID;
     bool isFrame;
 };
 

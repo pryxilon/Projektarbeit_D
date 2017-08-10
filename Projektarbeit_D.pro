@@ -40,7 +40,9 @@ SOURCES += main.cpp \
     globals.cpp \
     winninglines.cpp \
     winninglineconnecter.cpp \
-    winninglinerect.cpp
+    winninglinerect.cpp \
+    gameframeoverlay.cpp \
+    button.cpp
 
 HEADERS  += \
     gameframe.h \
@@ -58,7 +60,9 @@ HEADERS  += \
     globals.h \
     winninglines.h \
     winninglineconnecter.h \
-    winninglinerect.h
+    winninglinerect.h \
+    gameframeoverlay.h \
+    button.h
 
 FORMS    +=
 

@@ -15,6 +15,14 @@ class WinningLineOutput: public QGraphicsPixmapItem
 public:
     WinningLineOutput(int, QGraphicsView*);
 
+    QGraphicsView *getView() const;
+    void setView(QGraphicsView *);
+    int getID() const;
+    void setID(int);
+    WinningLineRect *getWinRect() const;
+    void setWinRect(WinningLineRect *);
+
+    void initializeWinLine();
     void outputHorizontalWinline();
     void outputDiagonalWinline131();
     void outputDiagonalWinline313();
@@ -22,37 +30,19 @@ public:
     void outputBigWLower();
     void outputSmallWUpper();
     void outputSmallWLower();
-
-    int getID() const;
-    void setID(int value);
-
-    char *getName() const;
-    void setName(char *value);
-    void setNameById();
+    void setRectsOfWarpholes();
+    void outputWinningLine(int, int, int);
+    void outputRectsOfWarpholes(int, int[5][2]);
+    void hideWinningLines(int);
+    void addPartsToScene();
 
     // public variables
     WinningLineConnecter * parts[4];
-
-    void initializeWinLine();
-    void outputWinningLine(int type, int length);
-    void hideWinningLines(int);
-
-
-
-    QGraphicsView *getView() const;
-    void setView(QGraphicsView *value);
     Slot * slot[5];
     Square *staticSquares[5];
 
-    void addPartsToScene();
-
-
-    WinningLineRect *getWinRect() const;
-    void setWinRect(WinningLineRect *value);
-
 private:
     int ID;
-    char *name;
     QGraphicsView * view;
     WinningLineRect *winRect;
 };
