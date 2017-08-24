@@ -142,7 +142,7 @@ int Slot::setRandomType(int i)
 {
     int rndNumberOrPic = setRandom(i);                                            // randomZahl wird in Funktion setRandomNumber erzeugt und dann in rndNumberOrPic gespeichert
 
-    if(rndNumberOrPic <= 10) {              // Dann -> Bild
+    if(rndNumberOrPic <= 35) {              // Dann -> Bild
         int rndNumberPic = setRandomPictures(i);
         return rndNumberPic;
     } else {                        // Dann -> Zahl
@@ -160,40 +160,40 @@ int Slot::setRandom(int i) {
     if(counter != 0 && counter != 1){                       // counter wird von beginn an hochgezählt, und wir benötigt um zu verhindern, dass in den 1. 2 durchläufen die nich leeren sq[4] und sq[5] nicht abgefragt werden
         if(squares[x]->getType() < 5) {                     // wenn voriges Feld ein SonderSquare war
             if(squares[y]->getType() < 5){                  // wenn beide vorigen Felder SonderSquares waren,
-                rndNumberOrPic = 11;                        // -> ist das Folgende sicher keines, sondern ein "normalesSquare" -> daher sofort auf '11' gesetzt, da über 10 automatisch Zahlenfeld
+                rndNumberOrPic = 36;                        // -> ist das Folgende sicher keines, sondern ein "normalesSquare" -> daher sofort auf '31' gesetzt, da über 30 automatisch Zahlenfeld
             } else {                                        // wenn das vorige aber nicht das 2. zuvor ein Sondersquare ist
-                rndNumberOrPic = qrand() % 35 + 7; // 8;    // -> dann wird die Chance auf ein folgendes SonderSquare verringert
+                rndNumberOrPic = qrand() % 100 + 25;          // -> dann wird die Chance auf ein folgendes SonderSquare verringert
             }
         } else {                                            // ist das vorige kein SonderSquare
             if(squares[y]->getType() < 5) {                 // aber das 2. zuvor eines
-                rndNumberOrPic = qrand() % 35 + 5; // 6;    // dann wird die Wahrscheinlichkeit verringert, aber nicht so stark wie oben
+                rndNumberOrPic = qrand() % 100 + 15;        // dann wird die Wahrscheinlichkeit verringert, aber nicht so stark wie oben
             } else {                                        // sind beide vorigen Felder normaleSquare
-                rndNumberOrPic = qrand() % 35 + 1;          // wird die normale Wahrscheinlichkeit von etwa 2.5 zu 1 verwendet
+                rndNumberOrPic = qrand() % 100 + 1;          // wird die normale Wahrscheinlichkeit von etwa 2.5 zu 1 verwendet, jetzt 7:3
             }
         }
     } else {
-        rndNumberOrPic = qrand() % 35 + 1;
+        rndNumberOrPic = qrand() % 100 + 1;
     }
     counter++;
     return rndNumberOrPic;
 }
 
 int Slot::setRandomPictures(int i) {
-    int rnd = qrand() % 90 + 1;
+    int rnd = qrand() % 100 + 1;
     int type = 0;
     int x = i == 0 ? 5 : i - 1;
     int y = x == 5 ? 4 : (x == 0 ? 5 : x - 1);
 
 
-    if((rnd > 0) && (rnd <= 30)) {            // p == Phenix
+    if((rnd > 0) && (rnd <= 33)) {            // p == Phenix
         type = 0;
-    } else if((rnd > 30) && (rnd <= 45)) {    // s == Skarabeus
+    } else if((rnd > 33) && (rnd <= 49)) {    // s == Skarabeus
         type = 1;
-    } else if((rnd > 45) && (rnd <= 60)) {    // x == Pharao
+    } else if((rnd > 49) && (rnd <= 65)) {    // x == Pharao
         type = 2;
-    } else if((rnd > 60) && (rnd <= 75)) {    // f == Forscher/Scientist
+    } else if((rnd > 65) && (rnd <= 80)) {    // f == Forscher/Scientist
         type = 3;
-    } else if((rnd > 75) && (rnd <= 90)) {    // b == book
+    } else if((rnd > 80) && (rnd <= 100)) {   // b == book
         type = 4;
     } else {
         qDebug() << "Error at setRandomPictures";
@@ -221,7 +221,7 @@ int Slot::setRandomNumbers(int i) {
         type = 6;
     } else if((rnd > 40) && (rnd <= 60)) {    // q == Queen
         type = 7;
-    } else if((rnd > 60) && (rnd <= 80)) {    // k == -king
+    } else if((rnd > 60) && (rnd <= 80)) {    // k == King
         type = 8;
     } else if((rnd > 80) && (rnd <= 100)) {    // a == Ace
         type = 9;
