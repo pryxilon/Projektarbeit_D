@@ -3,8 +3,10 @@
 
 #include "gameframe.h"
 
-class Credit
+class Credit: public QObject
 {
+    Q_OBJECT
+
 public:
     Credit(GameFrame *);
 
@@ -26,6 +28,11 @@ public:
     void addWonCredits();
     void handleRaiseButton();
     int  getSymbolValue(int, int);
+
+signals:
+    void changedBet(int newValue);
+    void changedLastWin(int newValue);
+    void changedCredit(int newValue);
 
 private:
     GameFrame *gf;

@@ -3,7 +3,7 @@
 
 #include <QLabel>
 
-CreditOutput::CreditOutput(QGraphicsView * view, GameFrame *gf)     // Freispielbanner
+CreditOutput::CreditOutput(QGraphicsView * view, GameFrame *gf, Credit * credits)     // Freispielbanner
 {
     setGf(gf);
     setView(view);
@@ -20,10 +20,20 @@ CreditOutput::CreditOutput(QGraphicsView * view, GameFrame *gf)     // Freispiel
                         "qproperty-alignment: 'AlignCenter';");
 }
 
-CreditOutput::CreditOutput(int x, QGraphicsView * view, GameFrame *gf)
+CreditOutput::CreditOutput(int x, QGraphicsView * view, GameFrame *gf, int ID, Credit *credits)
 {
+    setID(ID);
+    setCredits(credits);
     setGf(gf);
     setView(view);
+
+    switch(ID) {
+    case 0: connect(credits, SIGNAL(changedBet(int)), this, SLOT(setValue(int))); break;
+    case 1: connect(credits, SIGNAL(changedLastWin(int)), this, SLOT(setValue(int))); break;
+    case 2: connect(credits, SIGNAL(changedCredit(int)), this, SLOT(setValue(int))); break;
+    default: qDebug() << "default"; break;
+    }
+
     proxy = view->scene()->addWidget(this);
     proxy->setPos(x, 900);
     this->setFixedWidth(240);
@@ -52,6 +62,26 @@ GameFrame *CreditOutput::getGf() const
 void CreditOutput::setGf(GameFrame *value)
 {
     gf = value;
+}
+
+Credit *CreditOutput::getCredits() const
+{
+    return credits;
+}
+
+void CreditOutput::setCredits(Credit *value)
+{
+    credits = value;
+}
+
+int CreditOutput::getID() const
+{
+    return ID;
+}
+
+void CreditOutput::setID(int value)
+{
+    ID = value;
 }
 
 void CreditOutput::printLabel(int x)
@@ -87,4 +117,9 @@ void CreditOutput::blink() {
         setColor("DDDD00");
         gf->wait(100);
     }
+}
+
+void CreditOutput::setValue(int value)
+{
+    setText(QString::number(value));
 }
