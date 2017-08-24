@@ -25,6 +25,7 @@ int Credit::getCredit() const
 void Credit::setCredit(int value)
 {
     credit = value;
+    emit changedCredit(credit);
 }
 
 int Credit::getBet() const
@@ -35,6 +36,7 @@ int Credit::getBet() const
 void Credit::setBet(int value)
 {
     bet = value;
+    emit changedBet(bet);
 }
 
 int Credit::getMaxBet() const
@@ -50,6 +52,7 @@ int Credit::getLastGain() const
 void Credit::setLastGain(int value)
 {
     lastGain = value;
+    emit changedLastWin(lastGain);
 }
 
 bool Credit::getPlayerWin() const
@@ -100,12 +103,12 @@ void Credit::addWonCredits()
 void Credit::handleRaiseButton() {
     qDebug() << betButton;
     switch(betButton) {
-    case 0: betButton = 1; bet = 200; break;
-    case 1: betButton = 2; bet = 300; break;
-    case 2: betButton = 3; bet = 400; break;
-    case 3: betButton = 4; bet = 500; break;
-    case 4: betButton = 0; bet = 100; break;
-    default: betButton = 0; bet = 100; break;
+    case 0: betButton = 1; setBet(200); break;
+    case 1: betButton = 2; setBet(300); break;
+    case 2: betButton = 3; setBet(400); break;
+    case 3: betButton = 4; setBet(500); break;
+    case 4: betButton = 0; setBet(100); break;
+    default: betButton = 0; setBet(100); break;
     }
 }
 
