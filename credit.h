@@ -19,15 +19,18 @@ public:
     int  getMaxBet() const;
     int  getLastGain() const;
     void setLastGain(int);
-    bool getPlayerWin() const;
-    void setPlayerWin(bool);
     int  getBetButton() const;
     void setBetButton(int);
+    int  getStartingCredit() const;
+    void setStartingCredit(int value);
+    bool getPlayerWin() const;
+    void setPlayerWin(bool);
 
     void betting();
     void addWonCredits();
     void handleRaiseButton();
     int  getSymbolValue(int, int);
+
 
 signals:
     void changedBet(int newValue);
@@ -41,6 +44,7 @@ private:
     int const maxBet = 1000;
     int lastGain;
     int betButton = 0;
+    int startingCredit;
     bool playerWin;
 };
 

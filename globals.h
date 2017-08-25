@@ -7,5 +7,6 @@ extern int squareWidth;
 extern int squareHeight;
 extern int separatorWidth;
 extern int frameBorderWidth;
+extern int startingCredits;
 
 #endif // GLOBALS_H

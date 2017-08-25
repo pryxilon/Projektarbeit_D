@@ -30,10 +30,10 @@ GameFrame::GameFrame(QGraphicsView * view)
     noCredit = new Music();
     noCredit->getSound()->setMedia(QUrl("C:/Users/kaihs/Documents/Coding/Bilder/Sounds/NoCredits.mp3"));
 
-    gameOver = new GameFrameOverlay(true, view);
+    gameOver = new GameFrameOverlay(true, view, 0);
+    winnerOverlay = new GameFrameOverlay(true, view, 1);
 
-    freeSpinOverlay = new GameFrameOverlay(false, view);
-
+    freeSpinOverlay = new GameFrameOverlay(false, view, 2);
 }
 
 void GameFrame::setView(QGraphicsView * view)

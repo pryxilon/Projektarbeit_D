@@ -1,10 +1,11 @@
 #include "gameframeoverlay.h"
 #include "globals.h"
 
-GameFrameOverlay::GameFrameOverlay(bool withButton, QGraphicsView *view)
+GameFrameOverlay::GameFrameOverlay(bool withButton, QGraphicsView *view, int ID)
 {
     setView(view);
     setWithButton(withButton);
+    setID(ID);
 
     background = new QGraphicsPixmapItem(QPixmap("C:/Users/kaihs/Documents/Coding/Bilder/GameOver/GameOver.png"));
     background->setPos(sideMargin, topMargin);
@@ -16,8 +17,13 @@ GameFrameOverlay::GameFrameOverlay(bool withButton, QGraphicsView *view)
     view->scene()->addItem(text);
 
     if(withButton) {
-        text->setHtml("<div style='color: #FF0000; font-family: Space Age; font-size: 100px'>GAME OVER</div>");
-        gameOverButton = new Button(view, "Start new Game", 760, 570, 400, 100, false);
+        if(ID == 0) {
+            text->setHtml("<div style='color: #FF0000; font-family: Space Age; font-size: 100px'>GAME OVER</div>");
+        } else if(ID == 1) {
+            text->setPos(590, 310);
+            text->setHtml("<div style='color: #FF0000; font-family: Space Age; font-size: 100px'>GEWONNEN</div>");
+        }
+        restartButton = new Button(view, "Start new Game", 760, 570, 400, 100, false);
     }
 
     setLayerVisibility(false);
@@ -57,5 +63,15 @@ void GameFrameOverlay::setLayerVisibility(bool isVisible) {
     text->setVisible(isVisible);
 
     if(withButton)
-        gameOverButton->getProxy()->setVisible(isVisible);
+        restartButton->getProxy()->setVisible(isVisible);
+}
+
+int GameFrameOverlay::getID() const
+{
+    return ID;
+}
+
+void GameFrameOverlay::setID(int value)
+{
+    ID = value;
 }
