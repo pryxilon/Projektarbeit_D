@@ -85,28 +85,14 @@ void WinningLines::initializeWinningLineParts() {
 void WinningLines::checkWinnings(Square *shownSquares[5][3], int count, int sq[5][2], int betHeight) {
     setBetHeight(betHeight);
 
-    for(int i = 0; i < 3; i++) {
+    for(int i = 0; i < 3; i++)
         checkHorizontalWinLine(shownSquares, i);
-    }
 
-    if(winLineCount > 2) {
-        checkDiagonalWinLine(shownSquares, 3);
-        checkDiagonalWinLine(shownSquares, 4);
+    for(int i = 3; i <= winLineCount; i++)
+        checkDiagonalWinLine(shownSquares, i);
 
-        if(winLineCount > 4) {
-            checkBigWWinLine(shownSquares, 5);
-            checkBigWWinLine(shownSquares, 6);
-
-            if(winLineCount > 6) {
-                checkSmallWWinLine(shownSquares, 7);
-                checkSmallWWinLine(shownSquares, 8);
-            }
-        }
-    }
-
-    if(count > 2) {
+    if(count > 2)
         WinLine[9]->outputRectsOfWarpholes(count, sq);
-    }
 }
 
 void WinningLines::checkHorizontalWinLine(Square *shownSquares[5][3], int i) {
@@ -167,19 +153,19 @@ void WinningLines::checkSmallWWinLine(Square *shownSquares[5][3], int i) {
 void WinningLines::checkWinningLines(int type0, int type1, int type2, int type3, int type4, int winLineNumber)
 {
     line[winLineNumber] = 0;
-    if((type0 == type1) || (type0 == 4) || (type1 == 4)) {
-        if(type0 <= 4 && type1 <= 4 && type0 != type2 && type1 != type2 && !(type2 == 4)) {
+    if((type0 == type1) || (type0 == 4) || (type1 == 4)) {                                      // Abfrage ob mindestens Länge von min. 2 besteht
+        if(type0 <= 4 && type1 <= 4 && type0 != type2 && type1 != type2 && !(type2 == 4)) {     // wenn in dieser If-Abzweigung, dann Länge immer 2, nicht mehr, nicht weniger
             line[winLineNumber] = 2;
-            if(type0 == 4) {
+            if(type0 == 4) {                                                                    // If-Abzweigung legt Typ fest
                 winLineType[winLineNumber] = type1;
             } else {
                 winLineType[winLineNumber] = type0;
             }
         }
-        if(type0 == 4 && type1 == 4) {
+        if(type0 == 4 && type1 == 4) {                                                          // wenn in dieser If-Abzweigung, dann automatisch ersten beiden Felder Joker
             line[winLineNumber] = 3;
 
-            if(type3 == 4 || type2 == type3 || type2 == 4) {
+            if(type2 == 4 || type3 == 4 || type2 == type3) {
                 line[winLineNumber] = 4;
                 if(type4 == 4 || type2 == type4 || type3 == type4 || type2 == 4 || type3 == 4) {
                     line[winLineNumber] = 5;
@@ -187,7 +173,7 @@ void WinningLines::checkWinningLines(int type0, int type1, int type2, int type3,
             }
         }
 
-        if(type1 == type2 || (type2 == 4) || (type0 == type2 && type1 == 4)){
+        if(type1 == type2 || (type2 == 4) || (type0 == type2 && type1 == 4)){                   // Überprüfen, ob 2. gleich 3. Feld ist oder 3. Joker ist, oder ob 1. gleich 3. Feld ist, wenn 2. Joker ist
             line[winLineNumber] = 3;
             if(type3 == 4 || type0 == type3 || type1 == type3 || type2 == type3) {
                 line[winLineNumber] = 4;
@@ -198,7 +184,7 @@ void WinningLines::checkWinningLines(int type0, int type1, int type2, int type3,
         }
     }
 
-    if(type0 != 4){
+    if(type0 != 4){                                             // Festlegung des Typs, nächstes Feld wird überprüft, wenn geprüftes ein Joker ist
         winLineType[winLineNumber] = type0;
     } else if(type1 != 4) {
         winLineType[winLineNumber] = type1;

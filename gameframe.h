@@ -54,7 +54,7 @@ public:
 
     GameFrameOverlay *gameOver;
     GameFrameOverlay *freeSpinOverlay;
-
+    GameFrameOverlay *winnerOverlay;
 
 private:
     QGraphicsView * view;

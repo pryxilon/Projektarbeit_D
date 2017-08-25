@@ -31,7 +31,7 @@ Slot::Slot(int x, int y, QGraphicsView * view, int id)
     stopMusic->getSound()->setMedia(QUrl("C:/Users/kaihs/Documents/Coding/Bilder/Sounds/click1.mp3"));
 
     for(int i = 0; i < 6; i++) {                                                    // Es gibt !6! Squares pro Slot, diese bekommen nach einem durchlauf einen neuen Type
-        squares[i] = new Square(x, y, view, i, setRandomType(i));           // jedes Square wird erstellt
+        squares[i] = new Square(x, y, view, i, setRandomType(i));                   // jedes Square wird erstellt
         view->scene()->addItem(squares[i]);                                         // jedes SquareItem wird der Scene hinzugefügt
     }
 

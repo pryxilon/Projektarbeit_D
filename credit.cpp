@@ -225,3 +225,13 @@ int Credit::getSymbolValue(int type, int length)
     default: return 0;
     }
 }
+
+int Credit::getStartingCredit() const
+{
+    return startingCredit;
+}
+
+void Credit::setStartingCredit(int value)
+{
+    startingCredit = value;
+}
